@@ -38,6 +38,17 @@ first appeared. The original mod's history is in
   recipes and research. The card is an AE2UD card of its own kind now, so the Network Tool carries it without
   the original's patch to AE2; what takes it arrives with the Arcane Crafting Terminal and the Arcane
   Assembler.
+- **Essentia cells from 1k to 16384k, and portable ones.** A cell is an essentia component in an essentia cell
+  housing, put together from the two only, and an empty cell comes apart into them again in hand. The components
+  stay arcane crafts, each from three of the size below, and the housing is one too, where the original used
+  AE2's plain cell housing; there is no one-step shaped recipe, which would have skipped the arcane housing. A cell holds twelve aspects, as the
+  original's did, with the same bytes per aspect and idle drain, and takes the inverter, sticky, equal
+  distribution and void cards a fluid cell takes. The 256k and larger cells are there only when AE2UD's high
+  capacity storage is. Portable essentia cells are new: AE2UD's portable cell holding essentia, for every size
+  whose portable fluid cell is enabled. The 1k to 64k cells and components keep the original's ids and
+  textures; the rest are drawn from AE2UD's in the original's colours for now.
+- **The creative essentia cell holds every aspect without end**, 2^52 of each where the original held two
+  billion, and swallows whatever is put in.
 - **Forked from [Thaumic Energistics](https://github.com/Delfayne/ThaumicEnergistics) and aimed at AE2UD.**
   The original is built on AE2 UEL, where every kind of content needs a storage channel and parts of its own,
   and it carried an essentia copy of AE2's terminal, buses, storage bus and level emitter. AE2UD has one of

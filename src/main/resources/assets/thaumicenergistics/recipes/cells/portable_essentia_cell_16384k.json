@@ -1,0 +1,35 @@
+{
+    "conditions": [
+        {
+            "type": "forge:and",
+            "values": [
+                {
+                    "type": "minecraft:item_exists",
+                    "item": "appliedenergistics2:energy_cell"
+                },
+                {
+                    "type": "minecraft:item_exists",
+                    "item": "thaumicenergistics:portable_essentia_cell_16384k"
+                }
+            ]
+        }
+    ],
+    "result": {
+        "item": "thaumicenergistics:portable_essentia_cell_16384k"
+    },
+    "type": "forge:ore_shapeless",
+    "ingredients": [
+        {
+            "item": "appliedenergistics2:chest"
+        },
+        {
+            "item": "thaumicenergistics:essentia_component_16384k"
+        },
+        {
+            "item": "appliedenergistics2:energy_cell"
+        },
+        {
+            "item": "thaumicenergistics:essentia_cell_housing"
+        }
+    ]
+}

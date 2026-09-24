@@ -22,9 +22,13 @@ import appeng.api.behaviors.GenericSlotCapacities;
 import appeng.api.behaviors.StackExportStrategy;
 import appeng.api.behaviors.StackImportStrategy;
 import appeng.api.stacks.AEKeyType;
+import appeng.api.storage.StorageCells;
+import appeng.api.upgrades.CardTraits;
+import appeng.api.upgrades.IUpgradeRegistry;
 
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.ThERecipes;
+import thaumicenergistics.me.CreativeEssentiaCell;
 import thaumicenergistics.me.EssentiaKeyType;
 import thaumicenergistics.me.strategy.AspectContainerAdapter;
 import thaumicenergistics.me.strategy.EssentiaContainerItemStrategy;
@@ -61,8 +65,24 @@ public class CommonProxy {
         GenericSlotCapacities.register(EssentiaKeyType.INSTANCE, 250L);
 
         // After AE2's own cards, which it registers during initialisation too.
-        AEApi.instance().registries().upgrades().registerCard(new ItemStack(ThEItems.ARCANE_CHARGING_CARD),
-                ThEItems.ARCANE_CHARGING, 1);
+        final IUpgradeRegistry upgrades = AEApi.instance().registries().upgrades();
+        upgrades.registerCard(new ItemStack(ThEItems.ARCANE_CHARGING_CARD), ThEItems.ARCANE_CHARGING, 1);
+
+        StorageCells.addCellHandler(new CreativeEssentiaCell.Handler());
+        // The cards AE2UD gives its own fluid cells and portable fluid cells.
+        for (final Item cell : ThEItems.CELLS.values()) {
+            final ItemStack stack = new ItemStack(cell);
+            upgrades.addTraitSupport(CardTraits.INVERTER, stack, 1);
+            upgrades.addTraitSupport(CardTraits.STICKY, stack, 1);
+            upgrades.addTraitSupport(CardTraits.EQUAL_DISTRIBUTION, stack, 1);
+            upgrades.addTraitSupport(CardTraits.VOID, stack, 1);
+        }
+        for (final Item cell : ThEItems.PORTABLE_CELLS.values()) {
+            final ItemStack stack = new ItemStack(cell);
+            upgrades.addTraitSupport(CardTraits.ENERGY, stack, 2);
+            upgrades.addTraitSupport(CardTraits.VOID, stack, 1);
+            AEApi.instance().registries().charger().addChargeRate(cell, 800d);
+        }
     }
 
     public void postInit(FMLPostInitializationEvent event) {

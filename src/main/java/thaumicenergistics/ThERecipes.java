@@ -7,7 +7,9 @@ package thaumicenergistics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
@@ -57,6 +59,37 @@ public final class ThERecipes {
                         'Q', anyOf("gemQuartz", materials.purifiedNetherQuartzCrystal()),
                         'F', stack(materials.fluixDust()),
                         'L', stack(materials.logicProcessor())));
+
+        final Item salis = ItemsTC.salisMundus;
+        final Ingredient certus = anyOf("crystalCertusQuartz", materials.purifiedCertusQuartzCrystal());
+        final ItemStack quartzGlass = AEApi.instance().definitions().blocks().quartzGlass().maybeStack(1)
+                .orElse(ItemStack.EMPTY);
+        EssentiaTier previous = null;
+        for (final Map.Entry<EssentiaTier, Item> entry : ThEItems.COMPONENTS.entrySet()) {
+            final EssentiaTier tier = entry.getKey();
+            final ItemStack processor = stack(tier.processor.apply(materials));
+            final ItemStack component = new ItemStack(entry.getValue());
+            final String name = "essentia_component_" + tier.name;
+            if (previous == null) {
+                ThaumcraftApi.addArcaneCraftingRecipe(ThaumicEnergistics.id(name),
+                        new ShapedArcaneRecipe(GROUP, tier.research() + "@2", 10, new AspectList(), component,
+                                "SQS", "QPQ", "SQS",
+                                'S', salis, 'Q', certus, 'P', processor));
+            } else {
+                ThaumcraftApi.addArcaneCraftingRecipe(ThaumicEnergistics.id(name),
+                        new ShapedArcaneRecipe(GROUP, tier.research() + "@2", 10, new AspectList(), component,
+                                "SPS", "CGC", "SCS",
+                                'S', salis, 'P', processor, 'G', quartzGlass,
+                                'C', new ItemStack(ThEItems.COMPONENTS.get(previous))));
+            }
+            previous = tier;
+        }
+
+        ThaumcraftApi.addArcaneCraftingRecipe(ThaumicEnergistics.id("essentia_cell_housing"),
+                new ShapedArcaneRecipe(GROUP, EssentiaTier.T1K.research() + "@2", 10, new AspectList(),
+                        new ItemStack(ThEItems.ESSENTIA_CELL_HOUSING),
+                        "GSG", "S S", "TTT",
+                        'G', quartzGlass, 'S', salis, 'T', "ingotThaumium"));
 
         ThaumcraftApi.addArcaneCraftingRecipe(ThaumicEnergistics.id("upgrade_arcane"),
                 new ShapelessArcaneRecipe(GROUP, "ARCANETERMINAL@2&&WORKBENCHCHARGER", 25, new AspectList(),

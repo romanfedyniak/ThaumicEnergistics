@@ -1,0 +1,20 @@
+{
+    "conditions": [
+        {
+            "type": "minecraft:item_exists",
+            "item": "thaumicenergistics:essentia_cell_64k"
+        }
+    ],
+    "result": {
+        "item": "thaumicenergistics:essentia_cell_64k"
+    },
+    "type": "forge:ore_shapeless",
+    "ingredients": [
+        {
+            "item": "thaumicenergistics:essentia_cell_housing"
+        },
+        {
+            "item": "thaumicenergistics:essentia_component_64k"
+        }
+    ]
+}
