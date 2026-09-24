@@ -24,6 +24,12 @@ first appeared. The original mod's history is in
   what it holds; a container that takes essentia one at a time is filled one at a time. Essentia only ever
   comes out of a crucible or a centrifuge, since the crucible counts what it is given as taken and keeps none
   of it.
+- **Phials and jars fill and empty at a terminal.** Clicking an essentia row with an empty phial or a jar in
+  hand fills it from the network, and clicking with a full one empties it in, as a bucket does for a fluid;
+  with an empty hand the terminal borrows a phial from storage. It works in every AE2UD terminal and on a
+  filter slot, not only in an essentia terminal of its own. A phial fills and empties ten at a time, as
+  Thaumcraft makes it; a jar takes up to 250 of one aspect and keeps to its label. An interface slot holds 250
+  essentia, one jar's worth, before the interface's own multiplier.
 - **Forked from [Thaumic Energistics](https://github.com/Delfayne/ThaumicEnergistics) and aimed at AE2UD.**
   The original is built on AE2 UEL, where every kind of content needs a storage channel and parts of its own,
   and it carried an essentia copy of AE2's terminal, buses, storage bus and level emitter. AE2UD has one of
