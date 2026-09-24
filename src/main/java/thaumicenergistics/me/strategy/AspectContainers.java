@@ -20,6 +20,8 @@ import thaumcraft.common.tiles.essentia.TileJarFillable;
 import thaumcraft.common.tiles.essentia.TileJarFillableVoid;
 import thaumcraft.common.tiles.essentia.TileTubeBuffer;
 
+import thaumicenergistics.tile.TileInfusionProvider;
+
 /**
  * Moving essentia in and out of Thaumcraft's {@link IAspectContainer}, which has no way to ask what an insert
  * would do without doing it and differs from block to block in what it takes per call.
@@ -38,6 +40,10 @@ final class AspectContainers {
             return null;
         }
         final TileEntity target = world.getTileEntity(pos);
+        // The provider is this network's essentia, not a container: a storage bus on it would count it twice.
+        if (target instanceof TileInfusionProvider) {
+            return null;
+        }
         return target instanceof IAspectContainer container ? container : null;
     }
 

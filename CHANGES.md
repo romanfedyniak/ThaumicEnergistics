@@ -49,6 +49,14 @@ first appeared. The original mod's history is in
   textures; the rest are drawn from AE2UD's in the original's colours for now.
 - **The creative essentia cell holds every aspect without end**, 2^52 of each where the original held two
   billion, and swallows whatever is put in.
+- **The Infusion Provider is back**, with the original's id, model and infusion recipe. It offers the whole
+  network's essentia to whatever draws on essentia sources around it: a runic matrix while it infuses, an
+  essentia mirror, an essentia output. What it holds is read from the network's running count, since those ask
+  far more often than they take. A storage bus no longer mounts it as a container: on its own network that
+  would count the network twice, and AE2UD's interfaces already join one network to another.
+  Goggles of revealing show the network's essentia above it, as they do a jar's; the original sent that only as
+  the chunk loaded or the block was clicked, and it is now kept up to date once a second. The One Probe and
+  WAILA show whether it is online or missing a channel, as they do for AE2UD's own machines.
 - **Tubes connect to AE2UD's ME Interface**, the block and the part alike. An interface set to stock essentia in
   its slots is a source tubes draw that essentia from, as from a jar, even while a tube has just emptied it;
   one that stocks none takes whatever a tube brings straight into the network, pulling harder than any tube so

@@ -11,19 +11,28 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import appeng.api.AEApi;
+import appeng.block.AEBaseItemBlock;
+import appeng.core.features.ActivityState;
+import appeng.core.features.BlockStackSrc;
+import appeng.tile.AEBaseTile;
 import appeng.api.upgrades.CardTrait;
 import appeng.items.tools.powered.ToolPortableCell;
 
+import thaumicenergistics.block.BlockInfusionProvider;
 import thaumicenergistics.item.ItemArcaneChargingCard;
 import thaumicenergistics.item.ItemCreativeEssentiaCell;
 import thaumicenergistics.item.ItemEssentiaStorageCell;
 import thaumicenergistics.me.EssentiaKeyType;
+import thaumicenergistics.tile.TileInfusionProvider;
 
 /**
  * Everything the mod registers, by registry name. The names are the original mod's, so a world it saved finds
@@ -55,10 +64,15 @@ public final class ThEItems {
     public static Item ESSENTIA_CELL_HOUSING;
     public static Item CREATIVE_ESSENTIA_CELL;
 
+    public static final Map<String, Block> BLOCKS = new LinkedHashMap<>();
+    public static BlockInfusionProvider INFUSION_PROVIDER;
+
     private ThEItems() {
     }
 
     public static void init() {
+        INFUSION_PROVIDER = block("infusion_provider", new BlockInfusionProvider());
+
         COALESCENCE_CORE = material("coalescence_core", new Item());
         DIFFUSION_CORE = material("diffusion_core", new Item());
         ARCANE_CHARGING_CARD = material("upgrade_arcane", new ItemArcaneChargingCard());
@@ -81,6 +95,27 @@ public final class ThEItems {
         }
         // No recipe: a pack that wants it as a reward gives it one.
         CREATIVE_ESSENTIA_CELL = cell("essentia_cell_creative", new ItemCreativeEssentiaCell());
+    }
+
+    private static <T extends Block> T block(final String name, final T block) {
+        block.setRegistryName(ThaumicEnergistics.id(name));
+        block.setTranslationKey(ThaumicEnergistics.MODID + "." + name);
+        block.setCreativeTab(TAB);
+        BLOCKS.put(name, block);
+        return block;
+    }
+
+    /** Called while blocks are registered, and before the items that stand for them are. */
+    public static void registerTiles() {
+        registerTile(TileInfusionProvider.class, INFUSION_PROVIDER, "infusion_provider");
+        for (final Block block : BLOCKS.values()) {
+            ITEMS.put(block.getRegistryName().getPath(), new AEBaseItemBlock(block).setRegistryName(block.getRegistryName()));
+        }
+    }
+
+    private static void registerTile(final Class<? extends TileEntity> tile, final Block block, final String name) {
+        GameRegistry.registerTileEntity(tile, ThaumicEnergistics.id(name));
+        AEBaseTile.registerTileItem(tile, new BlockStackSrc(block, 0, ActivityState.Enabled));
     }
 
     private static Item cell(final String name, final Item item) {

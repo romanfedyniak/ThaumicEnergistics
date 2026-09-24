@@ -16,8 +16,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
 import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.blocks.BlocksTC;
+import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.ShapelessArcaneRecipe;
 import thaumcraft.api.items.ItemsTC;
@@ -95,6 +97,17 @@ public final class ThERecipes {
                 new ShapelessArcaneRecipe(GROUP, "ARCANETERMINAL@2&&WORKBENCHCHARGER", 25, new AspectList(),
                         new ItemStack(ThEItems.ARCANE_CHARGING_CARD),
                         new Object[] { stack(materials.advCard()), BlocksTC.arcaneWorkbenchCharger }));
+    }
+
+    /** Infusion recipes live in Thaumcraft's own list, not the recipe registry. */
+    public static void registerInfusion() {
+        final ItemStack iface = AEApi.instance().definitions().blocks().iface().maybeStack(1).orElse(ItemStack.EMPTY);
+        final ItemStack core = new ItemStack(ThEItems.COALESCENCE_CORE);
+        final ItemStack salis = new ItemStack(ItemsTC.salisMundus);
+        ThaumcraftApi.addInfusionCraftingRecipe(ThaumicEnergistics.id("infusion_provider"),
+                new InfusionRecipe("INFUSIONPROVIDER@2", new ItemStack(ThEItems.INFUSION_PROVIDER), 2,
+                        new AspectList().add(Aspect.MECHANISM, 25).add(Aspect.MAGIC, 25).add(Aspect.EXCHANGE, 20),
+                        iface, core, salis, core, salis));
     }
 
     private static ItemStack stack(final IItemDefinition definition) {

@@ -30,3 +30,4 @@ item.thaumicenergistics.portable_essentia_cell_4096k.name=§64096к§r пере�
 item.thaumicenergistics.portable_essentia_cell_16384k.name=§616384к§r переносна комірка есенції
 item.thaumicenergistics.essentia_cell_creative.name=Творча МЕ комірка есенції
 tooltip.thaumicenergistics.essentia_cell_creative.description=Містить усі види есенції
+tile.thaumicenergistics.infusion_provider.name=Постачальник есенції для інфузії

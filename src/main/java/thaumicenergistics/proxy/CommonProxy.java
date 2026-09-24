@@ -5,6 +5,7 @@
 
 package thaumicenergistics.proxy;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -54,6 +55,12 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
+    public void onRegisterBlocks(final RegistryEvent.Register<Block> event) {
+        ThEItems.BLOCKS.values().forEach(event.getRegistry()::register);
+        ThEItems.registerTiles();
+    }
+
+    @SubscribeEvent
     public void onRegisterItems(final RegistryEvent.Register<Item> event) {
         ThEItems.ITEMS.values().forEach(event.getRegistry()::register);
     }
@@ -78,6 +85,8 @@ public class CommonProxy {
         GenericSlotCapacities.register(EssentiaKeyType.INSTANCE, 250L);
 
         // After AE2's own cards, which it registers during initialisation too.
+        ThERecipes.registerInfusion();
+
         final IUpgradeRegistry upgrades = AEApi.instance().registries().upgrades();
         upgrades.registerCard(new ItemStack(ThEItems.ARCANE_CHARGING_CARD), ThEItems.ARCANE_CHARGING, 1);
 
