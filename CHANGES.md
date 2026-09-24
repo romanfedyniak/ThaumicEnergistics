@@ -17,6 +17,13 @@ first appeared. The original mod's history is in
   knowing what it is: the terminals list it, the key-type picker offers it, and each aspect is drawn with
   Thaumcraft's own icon in its own colour. A byte of a storage cell holds eight essentia and a machine
   operation moves one, the original mod's numbers, so nothing stored before the move stops fitting.
+- **AE2UD's own buses move essentia.** An import bus draws it out of a jar, an alembic or any other Thaumcraft
+  essentia container, an export bus and an interface fill one, and a storage bus mounts one as storage, so the
+  original's essentia buses and essentia storage bus are gone. A jar's label is honoured. Thaumcraft cannot
+  say what an insert would do without doing it, so what a jar or a tube buffer would take is worked out from
+  what it holds; a container that takes essentia one at a time is filled one at a time. Essentia only ever
+  comes out of a crucible or a centrifuge, since the crucible counts what it is given as taken and keeps none
+  of it.
 - **Forked from [Thaumic Energistics](https://github.com/Delfayne/ThaumicEnergistics) and aimed at AE2UD.**
   The original is built on AE2 UEL, where every kind of content needs a storage channel and parts of its own,
   and it carried an essentia copy of AE2's terminal, buses, storage bus and level emitter. AE2UD has one of
