@@ -8,9 +8,9 @@ and first written by Nividica and BrockWS, rewritten to fit AE2UD.
 
 Where the original added an essentia copy of AE2's parts - an essentia terminal, essentia buses, an essentia
 storage bus, an essentia level emitter - AE2UD has one of each that works with any kind of content. So this mod
-registers essentia as a key type, and the parts that are already there carry it. What it adds of its own is what
-has no counterpart: essentia cells, the Essentia Interface, the Infusion Provider, the Arcane Crafting Terminal,
-arcane patterns and the Arcane Assembler.
+registers essentia as a key type, and the parts that are already there carry it, with Thaumcraft's tubes meeting
+AE2UD's ME interfaces. What it adds of its own is what has no counterpart: essentia cells, the Infusion Provider,
+the Arcane Crafting Terminal and its wireless mode, arcane patterns and the Arcane Assembler.
 
 ## Compatibility
 

@@ -1,8 +1,0 @@
-{
-  "parent": "thaumicenergistics:block/essentia_interface_base",
-  "textures": {
-    "casing": "thaumicenergistics:block/essentia_interface_casing",
-    "screen": "thaumicenergistics:block/essentia_interface_screen_inactive",
-    "particle": "thaumicenergistics:block/essentia_interface_casing"
-  }
-}

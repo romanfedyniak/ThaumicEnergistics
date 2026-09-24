@@ -49,6 +49,9 @@ first appeared. The original mod's history is in
   textures; the rest are drawn from AE2UD's in the original's colours for now.
 - **The creative essentia cell holds every aspect without end**, 2^52 of each where the original held two
   billion, and swallows whatever is put in.
+- **The Essentia Interface is gone.** Import and export buses on a jar, a tube buffer or an alembic do what it
+  did: a tube fills a buffer the import bus empties into the network, and the export bus fills one a tube draws
+  from. Its research entry goes with it.
 - **Forked from [Thaumic Energistics](https://github.com/Delfayne/ThaumicEnergistics) and aimed at AE2UD.**
   The original is built on AE2 UEL, where every kind of content needs a storage channel and parts of its own,
   and it carried an essentia copy of AE2's terminal, buses, storage bus and level emitter. AE2UD has one of
