@@ -1,5 +1,5 @@
 ﻿# Creative Tab
-itemGroup.ThaumicEnergistics=Thaumic Energistics
+itemGroup.thaumicenergistics=Thaumic Energistics
 
 # Blocks
 tile.thaumicenergistics.infusion_provider.name=Essentia Infusion Provider

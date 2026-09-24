@@ -1,1 +1,5 @@
+itemGroup.thaumicenergistics=Thaumic Energistics
 thaumicenergistics.key_type.essentia=Есенція
+item.thaumicenergistics.coalescence_core.name=Ядро злиття
+item.thaumicenergistics.diffusion_core.name=Ядро розсіювання
+item.thaumicenergistics.upgrade_arcane.name=Карта таємного заряджання

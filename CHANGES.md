@@ -34,6 +34,10 @@ first appeared. The original mod's history is in
   sets a filter slot to that essentia, the recipe and usage keys work on an essentia row of a terminal, and a
   recipe that lists aspects carries them into a pattern. A phial or a jar dropped on a filter slot sets it to
   what it holds, as a bucket does for a fluid.
+- **The Coalescence and Diffusion Cores and the Arcane Charging Card are back**, with the original's ids, arcane
+  recipes and research. The card is an AE2UD card of its own kind now, so the Network Tool carries it without
+  the original's patch to AE2; what takes it arrives with the Arcane Crafting Terminal and the Arcane
+  Assembler.
 - **Forked from [Thaumic Energistics](https://github.com/Delfayne/ThaumicEnergistics) and aimed at AE2UD.**
   The original is built on AE2 UEL, where every kind of content needs a storage channel and parts of its own,
   and it carried an essentia copy of AE2's terminal, buses, storage bus and level emitter. AE2UD has one of
