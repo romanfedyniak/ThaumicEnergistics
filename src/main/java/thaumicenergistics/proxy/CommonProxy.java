@@ -8,7 +8,11 @@ package thaumicenergistics.proxy;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -18,6 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import appeng.api.AEApi;
 import appeng.api.behaviors.ContainerItemStrategy;
 import appeng.api.behaviors.ExternalStorageStrategy;
+import appeng.api.behaviors.GenericInventoryAdapters;
 import appeng.api.behaviors.GenericSlotCapacities;
 import appeng.api.behaviors.StackExportStrategy;
 import appeng.api.behaviors.StackImportStrategy;
@@ -30,6 +35,8 @@ import thaumicenergistics.ThEItems;
 import thaumicenergistics.ThERecipes;
 import thaumicenergistics.me.CreativeEssentiaCell;
 import thaumicenergistics.me.EssentiaKeyType;
+import thaumicenergistics.me.InterfaceEssentia;
+import thaumicenergistics.me.InterfaceEssentiaPulls;
 import thaumicenergistics.me.strategy.AspectContainerAdapter;
 import thaumicenergistics.me.strategy.EssentiaContainerItemStrategy;
 import thaumicenergistics.me.strategy.EssentiaExportStrategy;
@@ -39,6 +46,10 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(InterfaceEssentiaPulls.INSTANCE);
+        CapabilityManager.INSTANCE.register(InterfaceEssentia.class, new NoStorage<>(), () -> {
+            throw new UnsupportedOperationException("Only an ME interface offers essentia this way");
+        });
         ThEItems.init();
     }
 
@@ -57,6 +68,8 @@ public class CommonProxy {
         StackImportStrategy.register(EssentiaKeyType.INSTANCE, EssentiaImportStrategy::create);
         StackExportStrategy.register(EssentiaKeyType.INSTANCE, EssentiaExportStrategy::create);
         ExternalStorageStrategy.register(EssentiaKeyType.INSTANCE, AspectContainerAdapter.Strategy::new);
+        // What an ME interface offers Thaumcraft's tubes, which reach it through MixinInterfaceEssentia.
+        GenericInventoryAdapters.register(InterfaceEssentia.CAPABILITY, InterfaceEssentia::new);
 
         // A phial or a jar item fills and empties against a terminal row or a filter slot like a bucket.
         ContainerItemStrategy.register(EssentiaKeyType.INSTANCE, new EssentiaContainerItemStrategy());
@@ -86,6 +99,19 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
+    }
+
+    /** A capability AE2UD builds fresh for each interface; there is nothing of it to save. */
+    private static final class NoStorage<T> implements Capability.IStorage<T> {
+
+        @Override
+        public NBTBase writeNBT(final Capability<T> capability, final T instance, final EnumFacing side) {
+            return null;
+        }
+
+        @Override
+        public void readNBT(final Capability<T> capability, final T instance, final EnumFacing side, final NBTBase nbt) {
+        }
     }
 
     @SubscribeEvent

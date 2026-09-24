@@ -49,6 +49,12 @@ first appeared. The original mod's history is in
   textures; the rest are drawn from AE2UD's in the original's colours for now.
 - **The creative essentia cell holds every aspect without end**, 2^52 of each where the original held two
   billion, and swallows whatever is put in.
+- **Tubes connect to AE2UD's ME Interface**, the block and the part alike. An interface set to stock essentia in
+  its slots is a source tubes draw that essentia from, as from a jar, even while a tube has just emptied it;
+  one that stocks none takes whatever a tube brings straight into the network, pulling harder than any tube so
+  nothing flows back out. A tube meets a cable bus only on a face with an interface part. Thaumcraft looks for
+  its tube interface on the block entity itself, so a mixin adds it to AE2UD's interface block and cable bus,
+  which ask the interface on that face.
 - **The Essentia Interface is gone.** Import and export buses on a jar, a tube buffer or an alembic do what it
   did: a tube fills a buffer the import bus empties into the network, and the export bus fills one a tube draws
   from. Its research entry goes with it.

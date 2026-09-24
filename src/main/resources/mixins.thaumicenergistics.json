@@ -1,0 +1,10 @@
+{
+  "package": "thaumicenergistics.mixin",
+  "refmap": "mixins.thaumicenergistics.refmap.json",
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinInterfaceEssentia"
+  ]
+}
