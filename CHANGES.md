@@ -1,0 +1,26 @@
+# Changelog
+
+All notable Thaumic Energistics Unofficial Deconstructed changes are grouped by the version in which they
+first appeared. The original mod's history is in
+[its own changelog](https://github.com/Delfayne/ThaumicEnergistics/blob/main/CHANGELOG.md).
+
+## Important compatibility notice
+
+- Thaumic Energistics Unofficial Deconstructed runs only with AE2 Unofficial Deconstructed, not with standard
+  AE2 or AE2 Unofficial Extended Life.
+- Back up the world before installing or updating the mod.
+
+## Unreleased
+
+- **Forked from [Thaumic Energistics](https://github.com/Delfayne/ThaumicEnergistics) and aimed at AE2UD.**
+  The original is built on AE2 UEL, where every kind of content needs a storage channel and parts of its own,
+  and it carried an essentia copy of AE2's terminal, buses, storage bus and level emitter. AE2UD has one of
+  each that takes any registered kind of content, so those copies go and essentia is registered as a kind
+  instead. The code built on AE2 UEL is removed in this first step and comes back rewritten, one feature at a
+  time.
+- **The build is the same as the other AE2UD addons'.** CleanroomMC's ForgeDevEnv, the version read from the
+  latest `vX.Y.Z` git tag, a build on every push and jars published to GitHub Releases on a tag. The jar is
+  called `thaumicenergistics-ud`, so it cannot be mistaken for the mod it was forked from.
+- **The Russian translation is removed.**
+- **No version range on AE2UD yet.** AE2UD shares its mod id with AE2 and AE2 UEL, so only a version range
+  tells them apart, and the range cannot be written until AE2UD's first release.

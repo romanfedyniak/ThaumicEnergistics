@@ -1,48 +1,26 @@
-# Thaumic Energistics Extended Life
-*Because the digital age could use some magic!*
+# Thaumic Energistics Unofficial Deconstructed
 
-About
----
-This is a fork to keep Thaumic Energistics maintained for the Minecraft 1.12 community.
+Thaumcraft essentia and arcane crafting for [AE2 Unofficial Deconstructed](https://github.com/romanfedyniak/AE2UD),
+for Minecraft 1.12.2.
 
-The aim of this mod is to serve as a bridge between Thaumcraft and Applied Energistics. The primary focus is essentia management, both in storage, transportation, and application.
+This is a fork of [Thaumic Energistics](https://github.com/Delfayne/ThaumicEnergistics), maintained by Delfayne
+and first written by Nividica and BrockWS, rewritten to fit AE2UD.
 
-Thanks go out to AlgorithmX2 for Applied Energistics, Azanor for Thaumcraft, M3gaFr3ak for ExtraCells, and the Forge team.
+Where the original added an essentia copy of AE2's parts - an essentia terminal, essentia buses, an essentia
+storage bus, an essentia level emitter - AE2UD has one of each that works with any kind of content. So this mod
+registers essentia as a key type, and the parts that are already there carry it. What it adds of its own is what
+has no counterpart: essentia cells, the Essentia Interface, the Infusion Provider, the Arcane Crafting Terminal,
+arcane patterns and the Arcane Assembler.
 
-1.12.2 Localization's thanks to Hesperusrus.
-1.7.10 Localization's thanks to Mrkwtkr, alvin137, puyo061, Wuestengecko, TheVizzy, Adaptivity, Joccob, & Keridos.
-Texture thanks to CyanideX.
-Special thanks to MKoanga, Keridos & Aquahatsche.
+## Compatibility
 
-Built for Minecraft 1.12.2
+- This mod runs only with AE2 Unofficial Deconstructed, not with standard AE2 or AE2 Unofficial Extended Life.
+- A world that used the original Thaumic Energistics on AE2 UEL is not carried over yet; AE2UD itself does not
+  read AE2 UEL worlds.
+- Back up the world before installing or updating.
 
----
+## License
 
-Requirements
-
-The following mods are required for this mod:
-- Thaumcraft
-- Applied Energistics 2
-
-This is now currently based off AE2 Extended Life, but regular should still work.
-
-API
----
-
-Thaumic Energistics has an API similar to the AE2 API. Check src/api/java for more API info.
-
-How To Contribute
----
-
-## Code Format
-Code formatting is pretty simple, just keep to defaults. No tabs, use 4 spaces instead.
-
-## Compile
-
-1. Run ./gradlew setupDecompWorkspace build
-2. Your build shall be in build/libs/
-
-## Links
-
-[1.12 Community Discord]: https://discord.gg/kHKK8EhdxP
-[Curseforge]: https://www.curseforge.com/minecraft/mc-mods/thaumic-energistics-extended-life
+MIT, the same as the original; see [LICENSE](LICENSE). The original's history is in
+[its own changelog](https://github.com/Delfayne/ThaumicEnergistics/blob/main/CHANGELOG.md);
+changes made in this fork are in [CHANGES.md](CHANGES.md).

@@ -1,23 +1,25 @@
-#IDE
-.idea/*
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
 *.iml
-!.idea/codeStyles
-#!.idea/compiler.xml
-!.idea/encodings.xml
-!.idea/externalDependencies.xml
-!.idea/runConfigurations
-!.idea/vcs.xml
+.idea
 
-#Java
-target
-.mvn/
+# gradle
+build
 .gradle
-build/
 
-# Minecraft
-run/
+# kate
+*.kate-swp
 
-#Other
-*.db
-*.log
-*.zip
+# other
+eclipse
+run
