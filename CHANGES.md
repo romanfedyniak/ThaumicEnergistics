@@ -30,6 +30,10 @@ first appeared. The original mod's history is in
   filter slot, not only in an essentia terminal of its own. A phial fills and empties ten at a time, as
   Thaumcraft makes it; a jar takes up to 250 of one aspect and keeps to its label. An interface slot holds 250
   essentia, one jar's worth, before the interface's own multiplier.
+- **Aspects from the recipe viewer are essentia.** With Thaumic JEI installed, an aspect dragged out of HEI
+  sets a filter slot to that essentia, the recipe and usage keys work on an essentia row of a terminal, and a
+  recipe that lists aspects carries them into a pattern. A phial or a jar dropped on a filter slot sets it to
+  what it holds, as a bucket does for a fluid.
 - **Forked from [Thaumic Energistics](https://github.com/Delfayne/ThaumicEnergistics) and aimed at AE2UD.**
   The original is built on AE2 UEL, where every kind of content needs a storage channel and parts of its own,
   and it carried an essentia copy of AE2's terminal, buses, storage bus and level emitter. AE2UD has one of

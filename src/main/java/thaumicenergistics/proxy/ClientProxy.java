@@ -8,8 +8,10 @@ package thaumicenergistics.proxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 import appeng.api.client.AEKeyRendering;
+import appeng.api.integrations.hei.IngredientConverters;
 
 import thaumicenergistics.client.EssentiaKeyRenderHandler;
+import thaumicenergistics.client.hei.AspectIngredientConverter;
 import thaumicenergistics.me.EssentiaKeyType;
 
 public class ClientProxy extends CommonProxy {
@@ -18,6 +20,7 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
         AEKeyRendering.register(EssentiaKeyType.INSTANCE, new EssentiaKeyRenderHandler());
+        IngredientConverters.register(new AspectIngredientConverter());
     }
 
 }
