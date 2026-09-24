@@ -181,3 +181,4 @@ research.knowledgecore.stage.2=Eureka! I don't need to have the Arcane Assembler
 research.arcaneinscriber.title=Arcane Inscriber
 research.arcaneinscriber.stage.1=It appears the undead are not very bright. I've been trying to teach this Knowledge Core how to craft for a while now, yet it hasn't learned anything. I need to find a way to force the Knowledge Core to learn.
 research.arcaneinscriber.stage.2=Basing my design off of an ME Pattern Terminal, I have managed to design a kind of terminal that can teach recipes to a Knowledge Core. I simply load the recipe into the grid and then save it! I can also examine what recipes I have saved to a Knowledge Core, and if so desired, erase recipes from the zombie's memory. While a single zombie brain is limited in how many recipes it can remember, zombies are plentiful.
+thaumicenergistics.key_type.essentia=Essentia

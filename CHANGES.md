@@ -12,6 +12,11 @@ first appeared. The original mod's history is in
 
 ## Unreleased
 
+- **Essentia is a kind of content an ME network holds.** It is registered with AE2UD the way blocks and items
+  are registered with the game, so everything written to carry any kind of content carries essentia without
+  knowing what it is: the terminals list it, the key-type picker offers it, and each aspect is drawn with
+  Thaumcraft's own icon in its own colour. A byte of a storage cell holds eight essentia and a machine
+  operation moves one, the original mod's numbers, so nothing stored before the move stops fitting.
 - **Forked from [Thaumic Energistics](https://github.com/Delfayne/ThaumicEnergistics) and aimed at AE2UD.**
   The original is built on AE2 UEL, where every kind of content needs a storage channel and parts of its own,
   and it carried an essentia copy of AE2's terminal, buses, storage bus and level emitter. AE2UD has one of
