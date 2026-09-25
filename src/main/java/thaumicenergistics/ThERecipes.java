@@ -63,6 +63,25 @@ public final class ThERecipes {
                         'F', stack(materials.fluixDust()),
                         'L', stack(materials.logicProcessor())));
 
+        if (ThEConfig.essentiaCells()) {
+            registerCellParts(materials);
+        }
+
+        if (ThEConfig.arcaneTerminal()) {
+            ThaumcraftApi.addArcaneCraftingRecipe(ThaumicEnergistics.id("upgrade_arcane"),
+                    new ShapelessArcaneRecipe(GROUP, "ARCANETERMINAL@2&&WORKBENCHCHARGER", 25, new AspectList(),
+                            new ItemStack(ThEItems.ARCANE_CHARGING_CARD),
+                            new Object[] { stack(materials.advCard()), BlocksTC.arcaneWorkbenchCharger }));
+
+            ThaumcraftApi.addArcaneCraftingRecipe(ThaumicEnergistics.id("arcane_terminal"),
+                    new ShapelessArcaneRecipe(GROUP, "ARCANETERMINAL@2", 50, new AspectList(),
+                            new ItemStack(ThEItems.ARCANE_TERMINAL),
+                            new Object[] { stack(AEApi.instance().definitions().parts().terminal()),
+                                    BlocksTC.arcaneWorkbench, stack(materials.calcProcessor()) }));
+        }
+    }
+
+    private static void registerCellParts(final IMaterials materials) {
         final Item salis = ItemsTC.salisMundus;
         final Ingredient certus = anyOf("crystalCertusQuartz", materials.purifiedCertusQuartzCrystal());
         final ItemStack quartzGlass = AEApi.instance().definitions().blocks().quartzGlass().maybeStack(1)
@@ -93,17 +112,6 @@ public final class ThERecipes {
                         new ItemStack(ThEItems.ESSENTIA_CELL_HOUSING),
                         "GSG", "S S", "TTT",
                         'G', quartzGlass, 'S', salis, 'T', "ingotThaumium"));
-
-        ThaumcraftApi.addArcaneCraftingRecipe(ThaumicEnergistics.id("upgrade_arcane"),
-                new ShapelessArcaneRecipe(GROUP, "ARCANETERMINAL@2&&WORKBENCHCHARGER", 25, new AspectList(),
-                        new ItemStack(ThEItems.ARCANE_CHARGING_CARD),
-                        new Object[] { stack(materials.advCard()), BlocksTC.arcaneWorkbenchCharger }));
-
-        ThaumcraftApi.addArcaneCraftingRecipe(ThaumicEnergistics.id("arcane_terminal"),
-                new ShapelessArcaneRecipe(GROUP, "ARCANETERMINAL@2", 50, new AspectList(),
-                        new ItemStack(ThEItems.ARCANE_TERMINAL),
-                        new Object[] { stack(AEApi.instance().definitions().parts().terminal()),
-                                BlocksTC.arcaneWorkbench, stack(materials.calcProcessor()) }));
     }
 
     /** Infusion recipes live in Thaumcraft's own list, not the recipe registry. */
@@ -111,10 +119,15 @@ public final class ThERecipes {
         final ItemStack iface = AEApi.instance().definitions().blocks().iface().maybeStack(1).orElse(ItemStack.EMPTY);
         final ItemStack core = new ItemStack(ThEItems.COALESCENCE_CORE);
         final ItemStack salis = new ItemStack(ItemsTC.salisMundus);
-        ThaumcraftApi.addInfusionCraftingRecipe(ThaumicEnergistics.id("infusion_provider"),
-                new InfusionRecipe("INFUSIONPROVIDER@2", new ItemStack(ThEItems.INFUSION_PROVIDER), 2,
-                        new AspectList().add(Aspect.MECHANISM, 25).add(Aspect.MAGIC, 25).add(Aspect.EXCHANGE, 20),
-                        iface, core, salis, core, salis));
+        if (ThEConfig.infusionProvider()) {
+            ThaumcraftApi.addInfusionCraftingRecipe(ThaumicEnergistics.id("infusion_provider"),
+                    new InfusionRecipe("INFUSIONPROVIDER@2", new ItemStack(ThEItems.INFUSION_PROVIDER), 2,
+                            new AspectList().add(Aspect.MECHANISM, 25).add(Aspect.MAGIC, 25).add(Aspect.EXCHANGE, 20),
+                            iface, core, salis, core, salis));
+        }
+        if (!ThEConfig.arcaneAutocrafting()) {
+            return;
+        }
         final ItemStack assembler = AEApi.instance().definitions().blocks().molecularAssembler().maybeStack(1)
                 .orElse(ItemStack.EMPTY);
         ThaumcraftApi.addInfusionCraftingRecipe(ThaumicEnergistics.id("arcane_assembler"),

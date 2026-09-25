@@ -35,6 +35,7 @@ import appeng.api.upgrades.CardTraits;
 import appeng.api.upgrades.IUpgradeRegistry;
 
 import thaumicenergistics.ArcaneTerminalMode;
+import thaumicenergistics.ThEConfig;
 import thaumicenergistics.ThEGuis;
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.ThERecipes;
@@ -54,17 +55,24 @@ import thaumicenergistics.part.PartArcaneTerminal;
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
+        ThEConfig.warnAboutDependencies();
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(InterfaceEssentiaPulls.INSTANCE);
+        if (ThEConfig.interfaceTubes()) {
+            MinecraftForge.EVENT_BUS.register(InterfaceEssentiaPulls.INSTANCE);
+        }
         CapabilityManager.INSTANCE.register(InterfaceEssentia.class, new NoStorage<>(), () -> {
             throw new UnsupportedOperationException("Only an ME interface offers essentia this way");
         });
         ThEItems.init();
-        AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_OFF.getModels());
-        AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_ON.getModels());
-        // A wireless mode registered after this is never offered for unlocking.
+        if (ThEConfig.arcaneTerminal()) {
+            AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_OFF.getModels());
+            AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_ON.getModels());
+        }
         ThEGuis.registerBridges();
-        AEApi.instance().registries().wirelessTerminalModes().register(new ArcaneTerminalMode());
+        if (ThEConfig.wirelessArcaneMode()) {
+            // A wireless mode registered after this is never offered for unlocking.
+            AEApi.instance().registries().wirelessTerminalModes().register(new ArcaneTerminalMode());
+        }
     }
 
     @SubscribeEvent
@@ -88,8 +96,11 @@ public class CommonProxy {
         StackImportStrategy.register(EssentiaKeyType.INSTANCE, EssentiaImportStrategy::create);
         StackExportStrategy.register(EssentiaKeyType.INSTANCE, EssentiaExportStrategy::create);
         ExternalStorageStrategy.register(EssentiaKeyType.INSTANCE, AspectContainerAdapter.Strategy::new);
-        // What an ME interface offers Thaumcraft's tubes, which reach it through MixinInterfaceEssentia.
-        GenericInventoryAdapters.register(InterfaceEssentia.CAPABILITY, InterfaceEssentia::new);
+        if (ThEConfig.interfaceTubes()) {
+            // What an ME interface offers Thaumcraft's tubes, which reach it through MixinInterfaceEssentia; without
+            // it the mixin finds no interface on any face and connects nothing.
+            GenericInventoryAdapters.register(InterfaceEssentia.CAPABILITY, InterfaceEssentia::new);
+        }
 
         // A phial or a jar item fills and empties against a terminal row or a filter slot like a bucket.
         ContainerItemStrategy.register(EssentiaKeyType.INSTANCE, new EssentiaContainerItemStrategy());
@@ -101,16 +112,24 @@ public class CommonProxy {
         ThERecipes.registerInfusion();
 
         final IUpgradeRegistry upgrades = AEApi.instance().registries().upgrades();
-        upgrades.registerCard(new ItemStack(ThEItems.ARCANE_CHARGING_CARD), ThEItems.ARCANE_CHARGING, 1);
-        upgrades.addTraitSupport(ThEItems.ARCANE_CHARGING, new ItemStack(ThEItems.ARCANE_TERMINAL), 1);
-        final ItemStack assembler = new ItemStack(ThEItems.ARCANE_ASSEMBLER);
-        upgrades.addTraitSupport(CardTraits.SPEED, assembler, TileArcaneAssembler.SPEED_SLOTS);
-        upgrades.addTraitSupport(ThEItems.ARCANE_CHARGING, assembler, 1);
+        if (ThEConfig.arcaneTerminal()) {
+            upgrades.registerCard(new ItemStack(ThEItems.ARCANE_CHARGING_CARD), ThEItems.ARCANE_CHARGING, 1);
+            upgrades.addTraitSupport(ThEItems.ARCANE_CHARGING, new ItemStack(ThEItems.ARCANE_TERMINAL), 1);
+        }
+        if (ThEConfig.arcaneAutocrafting()) {
+            final ItemStack assembler = new ItemStack(ThEItems.ARCANE_ASSEMBLER);
+            upgrades.addTraitSupport(CardTraits.SPEED, assembler, TileArcaneAssembler.SPEED_SLOTS);
+            upgrades.addTraitSupport(ThEItems.ARCANE_CHARGING, assembler, 1);
+        }
 
         NetworkRegistry.INSTANCE.registerGuiHandler(ThaumicEnergistics.INSTANCE, ThEGuis.INSTANCE);
-        PatternEncodingModes.register(new ArcaneEncodingMode(ThEItems.ARCANE_PATTERN));
+        if (ThEConfig.arcaneAutocrafting()) {
+            PatternEncodingModes.register(new ArcaneEncodingMode(ThEItems.ARCANE_PATTERN));
+        }
 
-        StorageCells.addCellHandler(new CreativeEssentiaCell.Handler());
+        if (ThEConfig.creativeEssentiaCell()) {
+            StorageCells.addCellHandler(new CreativeEssentiaCell.Handler());
+        }
         // The cards AE2UD gives its own fluid cells and portable fluid cells.
         for (final Item cell : ThEItems.CELLS.values()) {
             final ItemStack stack = new ItemStack(cell);

@@ -77,35 +77,50 @@ public final class ThEItems {
     private ThEItems() {
     }
 
+    /** Anything whose feature is switched off stays null, and every use of it asks {@link ThEConfig} first. */
     public static void init() {
-        INFUSION_PROVIDER = block("infusion_provider", new BlockInfusionProvider());
-        ARCANE_ASSEMBLER = block("arcane_assembler", new BlockArcaneAssembler());
+        if (ThEConfig.infusionProvider()) {
+            INFUSION_PROVIDER = block("infusion_provider", new BlockInfusionProvider());
+        }
+        if (ThEConfig.arcaneAutocrafting()) {
+            ARCANE_ASSEMBLER = block("arcane_assembler", new BlockArcaneAssembler());
+        }
 
         COALESCENCE_CORE = material("coalescence_core", new Item());
         DIFFUSION_CORE = material("diffusion_core", new Item());
-        ARCANE_CHARGING_CARD = material("upgrade_arcane", new ItemArcaneChargingCard());
-        ARCANE_TERMINAL = part("arcane_terminal", new ItemArcaneTerminal());
-        // Only ever encoded, so on no tab: an empty one would look like the blank it is written onto.
-        ARCANE_PATTERN = item("arcane_pattern", new ItemArcanePattern()).setCreativeTab(null);
+        if (ThEConfig.arcaneTerminal()) {
+            ARCANE_CHARGING_CARD = material("upgrade_arcane", new ItemArcaneChargingCard());
+            ARCANE_TERMINAL = part("arcane_terminal", new ItemArcaneTerminal());
+        }
+        if (ThEConfig.arcaneAutocrafting()) {
+            // Only ever encoded, so on no tab: an empty one would look like the blank it is written onto.
+            ARCANE_PATTERN = item("arcane_pattern", new ItemArcanePattern()).setCreativeTab(null);
+        }
 
-        final boolean highCapacity = AEApi.instance().definitions().items().cell256k().isEnabled();
-        for (final EssentiaTier tier : EssentiaTier.values()) {
-            if (!tier.isHighCapacity() || highCapacity) {
-                COMPONENTS.put(tier, material("essentia_component_" + tier.name, new Item()));
+        if (ThEConfig.essentiaCells()) {
+            final boolean highCapacity = AEApi.instance().definitions().items().cell256k().isEnabled();
+            for (final EssentiaTier tier : EssentiaTier.values()) {
+                if (!tier.isHighCapacity() || highCapacity) {
+                    COMPONENTS.put(tier, material("essentia_component_" + tier.name, new Item()));
+                }
+            }
+            ESSENTIA_CELL_HOUSING = material("essentia_cell_housing", new Item());
+            for (final EssentiaTier tier : COMPONENTS.keySet()) {
+                CELLS.put(tier, cell("essentia_cell_" + tier.name, new ItemEssentiaStorageCell(tier)));
             }
         }
-        ESSENTIA_CELL_HOUSING = material("essentia_cell_housing", new Item());
-        for (final EssentiaTier tier : COMPONENTS.keySet()) {
-            CELLS.put(tier, cell("essentia_cell_" + tier.name, new ItemEssentiaStorageCell(tier)));
-        }
-        for (final EssentiaTier tier : COMPONENTS.keySet()) {
-            if (tier.portableFluidCell.apply(AEApi.instance().definitions().items()).isEnabled()) {
-                PORTABLE_CELLS.put(tier, cell("portable_essentia_cell_" + tier.name,
-                        new ToolPortableCell(tier.kilobytes, () -> EssentiaKeyType.INSTANCE)));
+        if (ThEConfig.portableEssentiaCells()) {
+            for (final EssentiaTier tier : COMPONENTS.keySet()) {
+                if (tier.portableFluidCell.apply(AEApi.instance().definitions().items()).isEnabled()) {
+                    PORTABLE_CELLS.put(tier, cell("portable_essentia_cell_" + tier.name,
+                            new ToolPortableCell(tier.kilobytes, () -> EssentiaKeyType.INSTANCE)));
+                }
             }
         }
-        // No recipe: a pack that wants it as a reward gives it one.
-        CREATIVE_ESSENTIA_CELL = cell("essentia_cell_creative", new ItemCreativeEssentiaCell());
+        if (ThEConfig.creativeEssentiaCell()) {
+            // No recipe: a pack that wants it as a reward gives it one.
+            CREATIVE_ESSENTIA_CELL = cell("essentia_cell_creative", new ItemCreativeEssentiaCell());
+        }
     }
 
     private static <T extends Block> T block(final String name, final T block) {
@@ -118,8 +133,12 @@ public final class ThEItems {
 
     /** Called while blocks are registered, and before the items that stand for them are. */
     public static void registerTiles() {
-        registerTile(TileInfusionProvider.class, INFUSION_PROVIDER, "infusion_provider");
-        registerTile(TileArcaneAssembler.class, ARCANE_ASSEMBLER, "arcane_assembler");
+        if (INFUSION_PROVIDER != null) {
+            registerTile(TileInfusionProvider.class, INFUSION_PROVIDER, "infusion_provider");
+        }
+        if (ARCANE_ASSEMBLER != null) {
+            registerTile(TileArcaneAssembler.class, ARCANE_ASSEMBLER, "arcane_assembler");
+        }
         for (final Block block : BLOCKS.values()) {
             ITEMS.put(block.getRegistryName().getPath(), new AEBaseItemBlock(block).setRegistryName(block.getRegistryName()));
         }

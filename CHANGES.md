@@ -93,6 +93,13 @@ first appeared. The original mod's history is in
   aura holds, with a network tool's cards beside it when the player carries one, and the item turns inside the
   block while it works. It is the arcane workbench's catalyst in the recipe screen. The original's knowledge
   core slot and armour slots are gone with the cores. The One Probe and WAILA show whether it is online.
+- **Each feature can be switched off** in `config/thaumicenergistics.cfg`: the Arcane Crafting Terminal with its
+  charging card, the wireless terminal's arcane mode, arcane autocrafting (the patterns, the pattern terminals'
+  arcane mode and the Arcane Assembler), the Infusion Provider, tubes meeting ME interfaces, essentia cells,
+  portable essentia cells and the creative essentia cell. A feature switched off registers nothing, so a world
+  that holds its blocks loses them and a server's players need the same file; the wireless mode and arcane
+  autocrafting stay off without the terminal, and portable cells without essentia cells. The original's settings
+  in that file went with the screens and buses they were for.
 - **Tubes connect to AE2UD's ME Interface**, the block and the part alike. An interface set to stock essentia in
   its slots is a source tubes draw that essentia from, as from a jar, even while a tube has just emptied it;
   one that stocks none takes whatever a tube brings straight into the network, pulling harder than any tube so

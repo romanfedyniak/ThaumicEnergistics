@@ -17,6 +17,7 @@ import appeng.api.client.AEKeyRendering;
 import appeng.api.integrations.hei.IngredientConverters;
 import appeng.api.patterns.client.PatternModePanels;
 
+import thaumicenergistics.ThEConfig;
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.client.EssentiaKeyRenderHandler;
 import thaumicenergistics.client.gui.ArcaneModePanel;
@@ -40,10 +41,14 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
         AEKeyRendering.register(EssentiaKeyType.INSTANCE, new EssentiaKeyRenderHandler());
         IngredientConverters.register(new AspectIngredientConverter());
-        PatternModePanels.register(ArcaneEncodingMode.ID, ArcaneModePanel::new);
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ItemArcaneTerminal::getColor,
-                ThEItems.ARCANE_TERMINAL);
-        ClientRegistry.bindTileEntitySpecialRenderer(TileArcaneAssembler.class, new ArcaneAssemblerRenderer());
+        if (ThEConfig.arcaneTerminal()) {
+            Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ItemArcaneTerminal::getColor,
+                    ThEItems.ARCANE_TERMINAL);
+        }
+        if (ThEConfig.arcaneAutocrafting()) {
+            PatternModePanels.register(ArcaneEncodingMode.ID, ArcaneModePanel::new);
+            ClientRegistry.bindTileEntitySpecialRenderer(TileArcaneAssembler.class, new ArcaneAssemblerRenderer());
+        }
     }
 
 }

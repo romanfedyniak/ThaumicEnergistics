@@ -15,6 +15,7 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 
 import appeng.integration.modules.jei.RecipeTransferHandler;
 
+import thaumicenergistics.ThEConfig;
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.container.ContainerArcaneTerminal;
 import thaumicenergistics.container.ContainerWirelessArcaneTerminal;
@@ -27,6 +28,9 @@ public class ThEJeiPlugin implements IModPlugin {
 
     @Override
     public void register(final IModRegistry registry) {
+        if (!ThEConfig.arcaneTerminal()) {
+            return;
+        }
         final ItemStack terminal = new ItemStack(ThEItems.ARCANE_TERMINAL);
         registry.getRecipeTransferRegistry().addRecipeTransferHandler(
                 new RecipeTransferHandler<>(ContainerArcaneTerminal.class), VanillaRecipeCategoryUid.CRAFTING);
@@ -41,7 +45,9 @@ public class ThEJeiPlugin implements IModPlugin {
             registry.getRecipeTransferRegistry().addRecipeTransferHandler(
                     new RecipeTransferHandler<>(ContainerWirelessArcaneTerminal.class), ARCANE_WORKBENCH);
             registry.addRecipeCatalyst(terminal, ARCANE_WORKBENCH);
-            registry.addRecipeCatalyst(new ItemStack(ThEItems.ARCANE_ASSEMBLER), ARCANE_WORKBENCH);
+            if (ThEConfig.arcaneAutocrafting()) {
+                registry.addRecipeCatalyst(new ItemStack(ThEItems.ARCANE_ASSEMBLER), ARCANE_WORKBENCH);
+            }
         }
     }
 }
