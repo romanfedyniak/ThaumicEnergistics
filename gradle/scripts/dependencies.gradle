@@ -55,6 +55,10 @@ dependencies {
     implementation rfg.deobf('curse.maven:baubles-227083:2518667') // Thaumcraft will not load without it
     implementation 'mezz:jei:4.34.0'
     runtimeOnly rfg.deobf('curse.maven:thaumic-jei-285492:5646810') // 1.7.0, the pack's
+    // Dev only: scripts in run/groovy add test recipes plain Thaumcraft has none of.
+    runtimeOnly (rfg.deobf('com.cleanroommc:groovyscript:1.4.3')) {
+        transitive = false
+    }
     // AE2UD implements its interface optionally; compiling against AE2UD's GUIs needs it present.
     compileOnly rfg.deobf('curse.maven:mouse-tweaks-unofficial-461660:5876158')
     // MixinBooter 10.7, the version AE2UD runs on, does not bring ASM to its annotation processor.
