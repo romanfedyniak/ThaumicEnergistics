@@ -33,6 +33,7 @@ import appeng.api.storage.StorageCells;
 import appeng.api.upgrades.CardTraits;
 import appeng.api.upgrades.IUpgradeRegistry;
 
+import thaumicenergistics.ArcaneTerminalMode;
 import thaumicenergistics.ThEGuis;
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.ThERecipes;
@@ -58,6 +59,9 @@ public class CommonProxy {
         ThEItems.init();
         AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_OFF.getModels());
         AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_ON.getModels());
+        // A wireless mode registered after this is never offered for unlocking.
+        ThEGuis.registerBridges();
+        AEApi.instance().registries().wirelessTerminalModes().register(new ArcaneTerminalMode());
     }
 
     @SubscribeEvent
@@ -98,7 +102,6 @@ public class CommonProxy {
         upgrades.addTraitSupport(ThEItems.ARCANE_CHARGING, new ItemStack(ThEItems.ARCANE_TERMINAL), 1);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(ThaumicEnergistics.INSTANCE, ThEGuis.INSTANCE);
-        ThEGuis.registerBridges();
 
         StorageCells.addCellHandler(new CreativeEssentiaCell.Handler());
         // The cards AE2UD gives its own fluid cells and portable fluid cells.

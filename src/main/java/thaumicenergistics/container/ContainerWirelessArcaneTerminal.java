@@ -13,6 +13,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -21,17 +22,20 @@ import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import appeng.api.networking.energy.IEnergySource;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.storage.MEStorage;
+import appeng.api.upgrades.IUpgradeInventory;
+import appeng.api.upgrades.UpgradeInventories;
 import appeng.container.ContainerNull;
 import appeng.container.guisync.GuiSync;
-import appeng.container.implementations.ContainerMEMonitorable;
+import appeng.container.implementations.ContainerMEPortableTerminal;
 import appeng.container.slot.SlotCraftingMatrix;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.core.sync.GuiBridge;
 import appeng.helpers.ICraftingGridContainer;
 import appeng.helpers.IContainerCraftingPacket;
+import appeng.helpers.WirelessTerminalGuiObject;
+import appeng.helpers.WirelessTerminalModes;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.Platform;
-import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperInvItemHandler;
 
@@ -39,20 +43,23 @@ import thaumicenergistics.ThEGuis;
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.crafting.ArcaneCosts;
 import thaumicenergistics.crafting.ArcaneCrafting;
-import thaumicenergistics.part.PartArcaneTerminal;
 
-/** The arcane terminal on a cable; the vis comes from the aura where it stands. */
-public class ContainerArcaneTerminal extends ContainerMEMonitorable implements IAEAppEngInventory,
-        IContainerCraftingPacket, ICraftingGridContainer, IArcaneTerminal, ArcaneCrafting.Host {
+/**
+ * The arcane terminal as a mode of AE2's wireless terminal. The vis comes from the aura where the player stands
+ * when the craft is made, and the grid and the card are kept in the terminal item, with this mode's own data.
+ */
+public class ContainerWirelessArcaneTerminal extends ContainerMEPortableTerminal implements IContainerCraftingPacket,
+        ICraftingGridContainer, IArcaneTerminal, ArcaneCrafting.Host {
 
-    /** Right of where AE2 moves a terminal's own slots, so they stay where the screen puts them. */
     private static final int OFF_WINDOW = 200;
 
-    private final PartArcaneTerminal part;
     private final ArcaneCrafting crafting = new ArcaneCrafting(this);
     private final AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
+    private final AppEngInternalInventory craftingGrid;
     private final SlotCraftingMatrix[] gridSlots = new SlotCraftingMatrix[9];
     private final SlotArcaneResult outputSlot;
+    /** The Arcane Charging Card, kept with this mode's grid rather than among the terminal's own cards. */
+    private final IUpgradeInventory card;
     private final SlotRestrictedInput cardSlot;
 
     @GuiSync(20)
@@ -60,28 +67,31 @@ public class ContainerArcaneTerminal extends ContainerMEMonitorable implements I
     private ArcaneCosts decoded = ArcaneCosts.NONE;
     private String decodedFrom = "";
 
-    public ContainerArcaneTerminal(final InventoryPlayer ip, final PartArcaneTerminal part) {
-        super(ip, part, false);
-        this.part = part;
+    public ContainerWirelessArcaneTerminal(final InventoryPlayer ip, final WirelessTerminalGuiObject gui) {
+        super(ip, gui, false);
 
-        final IItemHandler crafting = part.getInventoryByName("crafting");
+        final NBTTagCompound modeData = WirelessTerminalModes.getModeData(gui.getItemStack(), ThEGuis.ARCANE_MODE);
+        this.craftingGrid = new AppEngInternalInventory(this, 9);
+        this.craftingGrid.readFromNBT(modeData, "craftingGrid");
+        this.card = UpgradeInventories.forMachine(new ItemStack(ThEItems.ARCANE_TERMINAL), 1,
+                changed -> this.saveChanges());
+        this.card.readFromNBT(modeData, "upgrades");
+
         for (int slot = 0; slot < this.gridSlots.length; slot++) {
-            this.addSlotToContainer(this.gridSlots[slot] = new SlotCraftingMatrix(this, crafting, slot, 0, 0));
+            this.addSlotToContainer(this.gridSlots[slot] = new SlotCraftingMatrix(this, this.craftingGrid, slot,
+                    OFF_WINDOW, 0));
         }
         this.addSlotToContainer(this.outputSlot = new SlotArcaneResult(ip.player, this.getActionSource(),
-                this.getPowerSource(), part, crafting, this.output, this, this.crafting));
+                this.getPowerSource(), gui, this.craftingGrid, this.output, this, this.crafting));
         this.addSlotToContainer(this.cardSlot = new SlotRestrictedInput(
-                SlotRestrictedInput.PlacableItemType.UPGRADES, part.getInventoryByName("upgrades"), 0, OFF_WINDOW, 0,
-                ip));
+                SlotRestrictedInput.PlacableItemType.UPGRADES, this.card, 0, OFF_WINDOW, 0, ip));
 
-        this.bindPlayerInventory(ip, 0, 0);
-
-        this.onCraftMatrixChanged(new WrapperInvItemHandler(crafting));
+        this.onCraftMatrixChanged(new WrapperInvItemHandler(this.craftingGrid));
     }
 
     @Override
     public GuiBridge getOriginGui() {
-        return ThEGuis.arcaneTerminal();
+        return ThEGuis.wirelessArcaneTerminal();
     }
 
     @Override
@@ -110,7 +120,7 @@ public class ContainerArcaneTerminal extends ContainerMEMonitorable implements I
 
     @Override
     public void detectAndSendChanges() {
-        if (Platform.isServer() && this.crafting.recheck()) {
+        if (Platform.isServer() && this.craftingGrid != null && this.crafting.recheck()) {
             this.onCraftMatrixChanged(null);
         }
         super.detectAndSendChanges();
@@ -118,6 +128,10 @@ public class ContainerArcaneTerminal extends ContainerMEMonitorable implements I
 
     @Override
     public void onCraftMatrixChanged(final IInventory inventory) {
+        // The terminal's own constructor gets here before this one has built the grid.
+        if (this.outputSlot == null) {
+            return;
+        }
         final InventoryCrafting grid = new InventoryCrafting(new ContainerNull(), 3, 3);
         for (int slot = 0; slot < this.gridSlots.length; slot++) {
             grid.setInventorySlotContents(slot, this.gridSlots[slot].getStack());
@@ -147,23 +161,43 @@ public class ContainerArcaneTerminal extends ContainerMEMonitorable implements I
     }
 
     @Override
+    public void saveChanges() {
+        super.saveChanges();
+        if (Platform.isServer() && this.craftingGrid != null && this.card != null) {
+            final NBTTagCompound modeTag = new NBTTagCompound();
+            this.craftingGrid.writeToNBT(modeTag, "craftingGrid");
+            this.card.writeToNBT(modeTag, "upgrades");
+            WirelessTerminalModes.setModeData(this.wirelessTerminalGUIObject.getItemStack(), ThEGuis.ARCANE_MODE,
+                    modeTag);
+        }
+    }
+
+    @Override
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
+        if (inv == this.craftingGrid) {
+            this.saveChanges();
+        }
+    }
+
+    @Override
     public EntityPlayer getPlayer() {
         return this.getPlayerInv().player;
     }
 
     @Override
     public World getWorld() {
-        return this.part.getTile().getWorld();
+        return this.getPlayer().world;
     }
 
     @Override
     public BlockPos getPos() {
-        return this.part.getTile().getPos();
+        return this.getPlayer().getPosition();
     }
 
     @Override
     public boolean isCharging() {
-        return this.part.isInstalled(ThEItems.ARCANE_CHARGING);
+        return this.card.isInstalled(ThEItems.ARCANE_CHARGING);
     }
 
     @Nullable
@@ -183,20 +217,13 @@ public class ContainerArcaneTerminal extends ContainerMEMonitorable implements I
     }
 
     @Override
-    public void saveChanges() {
-    }
-
-    @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
-            final ItemStack removedStack, final ItemStack newStack) {
-    }
-
-    @Override
     public IItemHandler getInventoryByName(final String name) {
         if (name.equals("player")) {
             return new PlayerInvWrapper(this.getInventoryPlayer());
+        } else if (name.equals("crafting")) {
+            return this.craftingGrid;
         }
-        return this.part.getInventoryByName(name);
+        return null;
     }
 
     @Override

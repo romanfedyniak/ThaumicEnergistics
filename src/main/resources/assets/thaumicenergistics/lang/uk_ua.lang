@@ -38,6 +38,7 @@ gui.thaumicenergistics.arcane_terminal.available=Аура: %s
 gui.thaumicenergistics.arcane_terminal.crystal_needed=Потрібно: %s
 gui.thaumicenergistics.arcane_terminal.crystal_stored=У мережі: %s
 gui.thaumicenergistics.arcane_terminal.crystal_missing=У мережі не вистачає
+gui.thaumicenergistics.wireless_mode.arcane=Таємний
 gui.thaumicenergistics.vis_required=Вартість віс: %s
 gui.thaumicenergistics.vis_available=Доступно віс: %s
 gui.thaumicenergistics.vis_discount=Знижка: %s%%

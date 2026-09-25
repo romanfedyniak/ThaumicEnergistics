@@ -24,15 +24,18 @@ import thaumcraft.common.items.casters.CasterManager;
 
 import appeng.api.config.ActionItems;
 import appeng.api.config.Settings;
+import appeng.api.storage.ITerminalHost;
 import appeng.client.gui.implementations.GuiMEMonitorable;
+import appeng.container.implementations.ContainerMEMonitorable;
 import appeng.client.gui.widgets.GuiImgButton;
-import appeng.client.gui.widgets.GuiWirelessUpgradePlate;
-import appeng.container.interfaces.IWirelessTerminalContainer;
+import appeng.container.slot.SlotRestrictedInput;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketInventoryAction;
 import appeng.helpers.InventoryAction;
 
 import thaumicenergistics.container.ContainerArcaneTerminal;
+import thaumicenergistics.container.IArcaneTerminal;
+import thaumicenergistics.crafting.ArcaneCosts;
 import thaumicenergistics.crafting.ArcaneGrid;
 import thaumicenergistics.part.PartArcaneTerminal;
 
@@ -40,7 +43,7 @@ import thaumicenergistics.part.PartArcaneTerminal;
  * An ME terminal with Thaumcraft's own arcane workbench on a panel beside it, at its own size and from its own
  * texture: the grid inside the ring of crystal sockets, which the network fills, and the result box. The vis is
  * written under it and the Arcane Charging Card sits over the result. The view cells hang in a row on a plate of
- * their own above it, the player's armour on one to the left.
+ * their own above it.
  */
 public class GuiArcaneTerminal extends GuiMEMonitorable {
 
@@ -74,13 +77,13 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
     private static final int GLOW_U = 192;
     private static final int GLOW_SIZE = 64;
 
-    private static final int ARMOUR_PLATE_X = -33;
 
     private static final int TEXT_COLOR = 0x404040;
     private static final int SHORT_COLOR = 0xAA0000;
     private static final int MISSING_GLOW = 0xFF2020;
 
-    private final ContainerArcaneTerminal container;
+    private final ContainerMEMonitorable monitor;
+    private final IArcaneTerminal terminal;
     private GuiImgButton clearBtn;
     private GuiImgButton clearToPlayerBtn;
 
@@ -88,10 +91,11 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
         this(inventoryPlayer, part, new ContainerArcaneTerminal(inventoryPlayer, part));
     }
 
-    private GuiArcaneTerminal(final InventoryPlayer inventoryPlayer, final PartArcaneTerminal part,
-            final ContainerArcaneTerminal container) {
-        super(inventoryPlayer, part, container);
-        this.container = container;
+    protected <C extends ContainerMEMonitorable & IArcaneTerminal> GuiArcaneTerminal(
+            final InventoryPlayer inventoryPlayer, final ITerminalHost host, final C container) {
+        super(inventoryPlayer, host, container);
+        this.monitor = container;
+        this.terminal = container;
         this.setViewCellColumnShown(false);
     }
 
@@ -113,7 +117,7 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
     }
 
     private int cellsWidth() {
-        return CELLS_EDGE * 2 + 18 * this.container.getViewCells().length;
+        return rowWidth(this.monitor.getViewCells().length);
     }
 
     private static int cellX(final int index) {
@@ -128,39 +132,35 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
         return this.benchY() + CRYSTAL_Y[index];
     }
 
-    private int armourPlateY() {
-        return this.ySize - GuiWirelessUpgradePlate.height(ContainerArcaneTerminal.ARMOUR.length);
-    }
-
     @Override
     public void initGui() {
         super.initGui();
 
-        final Slot[] grid = this.container.getGridSlots();
+        final Slot[] grid = this.terminal.getGridSlots();
         for (int index = 0; index < grid.length; index++) {
             grid[index].xPos = benchX() + GRID + GRID_STEP * (index % 3);
             grid[index].yPos = this.benchY() + GRID + GRID_STEP * (index / 3);
         }
-        final Slot result = this.container.getOutputSlot();
+        final Slot result = this.terminal.getOutputSlot();
         result.xPos = benchX() + RESULT_X;
         result.yPos = this.benchY() + RESULT_Y;
 
-        final Slot card = this.container.getCardSlot();
+        final Slot card = this.terminal.getCardSlot();
         card.xPos = benchX() + RESULT_X;
         card.yPos = this.benchY() + CARD_Y;
 
-        for (int index = 0; index < this.container.getViewCells().length; index++) {
-            final Slot cell = this.container.getCellViewSlot(index);
+        for (int index = 0; index < this.monitor.getViewCells().length; index++) {
+            final Slot cell = this.monitor.getCellViewSlot(index);
             if (cell != null) {
                 cell.xPos = cellX(index);
                 cell.yPos = this.cellsY() + CELLS_EDGE + 1;
             }
         }
 
-        final Slot[] armour = this.container.getArmourSlots();
-        for (int slot = 0; slot < armour.length; slot++) {
-            armour[slot].xPos = ARMOUR_PLATE_X + IWirelessTerminalContainer.UPGRADE_SLOT_INSET;
-            armour[slot].yPos = this.armourPlateY() + IWirelessTerminalContainer.UPGRADE_SLOT_INSET + slot * 18;
+        final List<Slot> cards = this.terminalCards();
+        for (int index = 0; index < cards.size(); index++) {
+            cards.get(index).xPos = this.cardsX() + CELLS_EDGE + 1 + 18 * index;
+            cards.get(index).yPos = this.cellsY() + CELLS_EDGE + 1;
         }
 
         // Under the result box, where the workbench has nothing.
@@ -183,8 +183,33 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
                     ? InventoryAction.MOVE_REGION
                     : InventoryAction.MOVE_REGION_TO_PLAYER;
             NetworkHandler.instance().sendToServer(
-                    new PacketInventoryAction(action, this.container.getGridSlots()[0].slotNumber, 0));
+                    new PacketInventoryAction(action, this.terminal.getGridSlots()[0].slotNumber, 0));
         }
+    }
+
+    /** A wireless terminal's own cards, which sit in a row of their own beside the view cells'. */
+    private List<Slot> terminalCards() {
+        final List<Slot> cards = new ArrayList<>();
+        for (final Slot slot : this.inventorySlots.inventorySlots) {
+            if (slot instanceof SlotRestrictedInput upgrade && upgrade != this.terminal.getCardSlot()
+                    && upgrade.getPlaceableItemType() == SlotRestrictedInput.PlacableItemType.UPGRADES) {
+                cards.add(slot);
+            }
+        }
+        return cards;
+    }
+
+    private int cardsX() {
+        return PANEL_X + this.cellsWidth() + GAP;
+    }
+
+    private static int rowWidth(final int slots) {
+        return CELLS_EDGE * 2 + 18 * slots;
+    }
+
+    @Override
+    protected boolean drawsWirelessUpgradePlate() {
+        return false;
     }
 
     @Override
@@ -198,8 +223,11 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
         areas.add(new Rectangle(this.guiLeft + PANEL_X, this.guiTop + this.panelY(), PANEL_WIDTH, PANEL_HEIGHT));
         areas.add(new Rectangle(this.guiLeft + PANEL_X, this.guiTop + this.cellsY(), this.cellsWidth(),
                 CELLS_HEIGHT));
-        GuiWirelessUpgradePlate.addExclusionArea(areas, this.guiLeft + ARMOUR_PLATE_X,
-                this.guiTop + this.armourPlateY(), ContainerArcaneTerminal.ARMOUR.length);
+        final int cards = this.terminalCards().size();
+        if (cards > 0) {
+            areas.add(new Rectangle(this.guiLeft + this.cardsX(), this.guiTop + this.cellsY(), rowWidth(cards),
+                    CELLS_HEIGHT));
+        }
         return areas;
     }
 
@@ -207,8 +235,6 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
     public void drawBG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawBG(offsetX, offsetY, mouseX, mouseY);
 
-        GuiWirelessUpgradePlate.draw(this, offsetX + ARMOUR_PLATE_X, offsetY + this.armourPlateY(),
-                ContainerArcaneTerminal.ARMOUR.length);
 
         drawPanel(offsetX + PANEL_X, offsetY + this.panelY(), PANEL_WIDTH, PANEL_HEIGHT);
 
@@ -225,8 +251,15 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
         drawSlotWell(offsetX + benchX() + RESULT_X, offsetY + this.benchY() + CARD_Y);
 
         drawPanel(offsetX + PANEL_X, offsetY + this.cellsY(), this.cellsWidth(), CELLS_HEIGHT);
-        for (int index = 0; index < this.container.getViewCells().length; index++) {
-            if (this.container.getCellViewSlot(index) != null) {
+        final List<Slot> cards = this.terminalCards();
+        if (!cards.isEmpty()) {
+            drawPanel(offsetX + this.cardsX(), offsetY + this.cellsY(), rowWidth(cards.size()), CELLS_HEIGHT);
+            for (final Slot card : cards) {
+                drawSlotWell(offsetX + card.xPos, offsetY + card.yPos);
+            }
+        }
+        for (int index = 0; index < this.monitor.getViewCells().length; index++) {
+            if (this.monitor.getCellViewSlot(index) != null) {
                 drawSlotWell(offsetX + cellX(index), offsetY + this.cellsY() + CELLS_EDGE + 1);
             }
         }
@@ -241,10 +274,10 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
                 : this.mc.getRenderViewEntity().ticksExisted + this.mc.getRenderPartialTicks();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
         for (int index = 0; index < ArcaneGrid.PRIMALS.length; index++) {
-            if (this.container.getCrystalsNeeded(index) == 0) {
+            if (this.costs().getCrystalsNeeded(index) == 0) {
                 continue;
             }
-            final boolean missing = this.container.isCrystalMissing(index);
+            final boolean missing = this.costs().isCrystalMissing(index);
             final int color = missing ? MISSING_GLOW : ArcaneGrid.PRIMALS[index].getColor();
             GlStateManager.color((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F,
                     (color & 0xFF) / 255.0F, missing ? 0.8F : 0.33F);
@@ -264,21 +297,21 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(offsetX, offsetY, mouseX, mouseY);
 
-        final String cost = this.container.visCost < 0 ? ""
-                : I18n.format("gui.thaumicenergistics.arcane_terminal.cost", this.container.visCost) + "   ";
+        final String cost = this.costs().getVisCost() < 0 ? ""
+                : I18n.format("gui.thaumicenergistics.arcane_terminal.cost", this.costs().getVisCost()) + "   ";
         final String available = I18n.format("gui.thaumicenergistics.arcane_terminal.available",
-                this.container.visAvailable);
+                this.costs().getVisAvailable());
         final int left = PANEL_X + (PANEL_WIDTH - this.fontRenderer.getStringWidth(cost + available)) / 2;
-        this.fontRenderer.drawString(cost, left, this.panelY() + VIS_Y, this.isShortOfVis() ? SHORT_COLOR : TEXT_COLOR);
+        this.fontRenderer.drawString(cost, left, this.panelY() + VIS_Y, this.costs().isShortOfVis() ? SHORT_COLOR : TEXT_COLOR);
         this.fontRenderer.drawString(available, left + this.fontRenderer.getStringWidth(cost), this.panelY() + VIS_Y,
                 TEXT_COLOR);
 
         RenderHelper.enableGUIStandardItemLighting();
         for (int index = 0; index < ArcaneGrid.PRIMALS.length; index++) {
-            final int needed = this.container.getCrystalsNeeded(index);
+            final int needed = this.costs().getCrystalsNeeded(index);
             if (needed > 0) {
                 final ItemStack crystal = this.crystal(index);
-                final String count = this.container.isCrystalMissing(index)
+                final String count = this.costs().isCrystalMissing(index)
                         ? TextFormatting.RED.toString() + needed
                         : null;
                 this.itemRender.renderItemAndEffectIntoGUI(crystal, crystalX(index), this.crystalY(index));
@@ -289,13 +322,13 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
         RenderHelper.disableStandardItemLighting();
     }
 
-    private boolean isShortOfVis() {
-        return this.container.visCost > this.container.visAvailable;
+    private ArcaneCosts costs() {
+        return this.terminal.getCosts();
     }
 
     private ItemStack crystal(final int index) {
         return ThaumcraftApiHelper.makeCrystal(ArcaneGrid.PRIMALS[index],
-                Math.max(1, this.container.getCrystalsNeeded(index)));
+                Math.max(1, this.costs().getCrystalsNeeded(index)));
     }
 
     @Override
@@ -318,13 +351,13 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
     private List<String> crystalTooltip(final int index) {
         final List<String> lines = new ArrayList<>();
         lines.add(this.crystal(index).getDisplayName());
-        final int needed = this.container.getCrystalsNeeded(index);
+        final int needed = this.costs().getCrystalsNeeded(index);
         if (needed > 0) {
             lines.add(TextFormatting.GRAY + I18n.format("gui.thaumicenergistics.arcane_terminal.crystal_needed",
                     needed));
             lines.add(TextFormatting.GRAY + I18n.format("gui.thaumicenergistics.arcane_terminal.crystal_stored",
-                    this.container.getCrystalsStored(index)));
-            if (this.container.isCrystalMissing(index)) {
+                    this.costs().getCrystalsStored(index)));
+            if (this.costs().isCrystalMissing(index)) {
                 lines.add(TextFormatting.RED
                         + I18n.format("gui.thaumicenergistics.arcane_terminal.crystal_missing"));
             }
@@ -334,10 +367,10 @@ public class GuiArcaneTerminal extends GuiMEMonitorable {
 
     private List<String> visTooltip() {
         final List<String> lines = new ArrayList<>();
-        if (this.container.visCost >= 0) {
-            lines.add(I18n.format("gui.thaumicenergistics.vis_required", this.container.visCost));
+        if (this.costs().getVisCost() >= 0) {
+            lines.add(I18n.format("gui.thaumicenergistics.vis_required", this.costs().getVisCost()));
         }
-        lines.add(I18n.format("gui.thaumicenergistics.vis_available", this.container.visAvailable));
+        lines.add(I18n.format("gui.thaumicenergistics.vis_available", this.costs().getVisAvailable()));
         final int discount = Math.round(CasterManager.getTotalVisDiscount(this.mc.player) * 100);
         if (discount > 0) {
             lines.add(I18n.format("gui.thaumicenergistics.vis_discount", discount));

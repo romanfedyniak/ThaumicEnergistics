@@ -65,10 +65,15 @@ first appeared. The original mod's history is in
   straight from the network, each glowing in its socket as on the workbench, and the ones the network is short of
   glow red; hovering one tells how many the recipe takes and how many the network holds. The vis the recipe
   costs, after the player's discount, and what the aura holds are written under the workbench, and the result
-  shows only once both the vis and the crystals are there. The player's armour sits on a plate to the left, since what they wear lowers
-  the cost, and the Arcane Charging Card in its slot over the result lets it draw vis from the eight chunks
-  around its own, as a vis charger does for the workbench. With Thaumic JEI, the "+" on an arcane workbench
-  recipe fills the grid too.
+  shows only once both the vis and the crystals are there. The original's armour slots are gone: what the player
+  wears still lowers the cost. The Arcane Charging Card in its slot over the result lets it draw vis from the
+  eight chunks around its own, as a vis charger does for the workbench. With Thaumic JEI, the "+" on an arcane
+  workbench recipe fills the grid too.
+- **The wireless terminal has an arcane mode.** Crafting an Arcane Crafting Terminal into AE2UD's wireless
+  terminal adds it, as the other terminals are added, in place of the original's wireless essentia terminal and
+  its arcane crafting. It is the same screen, with the vis taken from the aura where the player stands at the
+  moment of each craft, so it cannot be read in one chunk and spent in another. The grid is kept in the terminal.
+  The Arcane Charging Card has its own slot there too, kept with the grid.
 - **Tubes connect to AE2UD's ME Interface**, the block and the part alike. An interface set to stock essentia in
   its slots is a source tubes draw that essentia from, as from a jar, even while a tube has just emptied it;
   one that stocks none takes whatever a tube brings straight into the network, pulling harder than any tube so

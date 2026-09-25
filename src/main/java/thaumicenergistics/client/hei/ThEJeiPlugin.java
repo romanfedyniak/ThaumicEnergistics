@@ -17,6 +17,7 @@ import appeng.integration.modules.jei.RecipeTransferHandler;
 
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.container.ContainerArcaneTerminal;
+import thaumicenergistics.container.ContainerWirelessArcaneTerminal;
 
 @JEIPlugin
 public class ThEJeiPlugin implements IModPlugin {
@@ -29,12 +30,16 @@ public class ThEJeiPlugin implements IModPlugin {
         final ItemStack terminal = new ItemStack(ThEItems.ARCANE_TERMINAL);
         registry.getRecipeTransferRegistry().addRecipeTransferHandler(
                 new RecipeTransferHandler<>(ContainerArcaneTerminal.class), VanillaRecipeCategoryUid.CRAFTING);
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(
+                new RecipeTransferHandler<>(ContainerWirelessArcaneTerminal.class), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipeCatalyst(terminal, VanillaRecipeCategoryUid.CRAFTING);
 
         // Its screen lists the grid's nine squares first, as the terminal numbers them.
         if (Loader.isModLoaded("thaumicjei")) {
             registry.getRecipeTransferRegistry().addRecipeTransferHandler(
                     new RecipeTransferHandler<>(ContainerArcaneTerminal.class), ARCANE_WORKBENCH);
+            registry.getRecipeTransferRegistry().addRecipeTransferHandler(
+                    new RecipeTransferHandler<>(ContainerWirelessArcaneTerminal.class), ARCANE_WORKBENCH);
             registry.addRecipeCatalyst(terminal, ARCANE_WORKBENCH);
         }
     }
