@@ -1,0 +1,111 @@
+{
+  "entries": [
+    {
+      "key": "BASEENERGISTICS",
+      "name": "research.base_energistics.title",
+      "icons": [
+        "thaumicenergistics:textures/research/tab_icon.png"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        0,
+        0
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "f_AECORE",
+        "UNLOCKARTIFICE"
+      ],
+      "stages": [
+        {
+          "text": "research.base_energistics.stage.1"
+        }
+      ]
+    },
+    {
+      "key": "DIGISENTIA",
+      "name": "research.digisentia.title",
+      "icons": [
+        "thaumicenergistics:coalescence_core",
+        "thaumicenergistics:diffusion_core"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        0,
+        -2
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "BASEENERGISTICS"
+      ],
+      "stages": [
+        {
+          "text": "research.digisentia.stage.1",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;1"
+          ],
+          "required_item": [
+            "appliedenergistics2:material;2;22",
+            "appliedenergistics2:material;2;8",
+            "appliedenergistics2:material;1;0",
+            "minecraft:quartz",
+            "thaumcraft:quicksilver;2"
+          ]
+        },
+        {
+          "text": "research.digisentia.stage.2",
+          "recipes": [
+            "thaumicenergistics:coalescence_core",
+            "thaumicenergistics:diffusion_core"
+          ]
+        }
+      ],
+      "reward_knowledge": [
+        "OBSERVATION;THAUMICENERGISTICS;1"
+      ]
+    },
+    {
+      "key": "ESSENTIABUSES",
+      "name": "research.essentiabuses.title",
+      "icons": [
+        "appliedenergistics2:part;1;240",
+        "appliedenergistics2:part;1;260",
+        "appliedenergistics2:part;1;220"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        4,
+        -2
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "DIGISENTIA"
+      ],
+      "stages": [
+        {
+          "text": "research.essentiabuses.stage.1",
+          "required_knowledge": [
+            "OBSERVATION;THAUMICENERGISTICS;1"
+          ]
+        },
+        {
+          "text": "research.essentiabuses.stage.2"
+        }
+      ],
+      "addenda": [
+        {
+          "text": "research.essentiabuses.addenda.tubes",
+          "required_research": [
+            "ESSENTIABUSES"
+          ]
+        }
+      ]
+    }
+  ]
+}

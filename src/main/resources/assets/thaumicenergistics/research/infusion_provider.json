@@ -1,0 +1,38 @@
+{
+  "entries": [
+    {
+      "key": "INFUSIONPROVIDER",
+      "name": "research.infusionprovider.title",
+      "icons": [
+        "thaumicenergistics:infusion_provider"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        2,
+        -4
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "DIGISENTIA",
+        "ESSENTIABUSES",
+        "INFUSION"
+      ],
+      "stages": [
+        {
+          "text": "research.infusionprovider.stage.1",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;3"
+          ]
+        },
+        {
+          "text": "research.infusionprovider.stage.2",
+          "recipes": [
+            "thaumicenergistics:infusion_provider"
+          ]
+        }
+      ]
+    }
+  ]
+}

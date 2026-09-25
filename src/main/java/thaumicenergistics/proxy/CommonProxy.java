@@ -49,6 +49,7 @@ import thaumicenergistics.me.strategy.AspectContainerAdapter;
 import thaumicenergistics.me.strategy.EssentiaContainerItemStrategy;
 import thaumicenergistics.me.strategy.EssentiaExportStrategy;
 import thaumicenergistics.me.strategy.EssentiaImportStrategy;
+import thaumicenergistics.research.ThEResearch;
 import thaumicenergistics.tile.TileArcaneAssembler;
 import thaumicenergistics.part.PartArcaneTerminal;
 
@@ -110,6 +111,7 @@ public class CommonProxy {
 
         // After AE2's own cards, which it registers during initialisation too.
         ThERecipes.registerInfusion();
+        ThEResearch.register();
 
         final IUpgradeRegistry upgrades = AEApi.instance().registries().upgrades();
         if (ThEConfig.arcaneTerminal()) {
@@ -147,6 +149,7 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
+        ThEResearch.dropAddendaOfDisabledFeatures();
     }
 
     /** A capability AE2UD builds fresh for each interface; there is nothing of it to save. */

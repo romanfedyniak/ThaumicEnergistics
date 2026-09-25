@@ -1,0 +1,203 @@
+{
+  "entries": [
+    {
+      "key": "ESSENTIASTORAGE1k",
+      "name": "research.essentiastorage1k.title",
+      "icons": [
+        "thaumicenergistics:essentia_component_1k"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        -2,
+        0
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "BASEENERGISTICS"
+      ],
+      "stages": [
+        {
+          "text": "research.essentiastorage1k.stage.1",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;1"
+          ],
+          "required_item": [
+            "thaumcraft:salis_mundus;4",
+            "appliedenergistics2:material;4;0",
+            "appliedenergistics2:material;1;22"
+          ]
+        },
+        {
+          "text": "research.essentiastorage1k.stage.2",
+          "recipes": [
+            "thaumicenergistics:essentia_component_1k",
+            "thaumicenergistics:cells/essentia_cell_1k_housing"
+          ]
+        }
+      ],
+      "addenda": [
+        {
+          "text": "research.essentiastorage.addenda.portable",
+          "required_research": [
+            "ESSENTIASTORAGE1k"
+          ],
+          "recipes": [
+            "thaumicenergistics:cells/portable_essentia_cell_1k"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ESSENTIASTORAGE4k",
+      "name": "research.essentiastorage4k.title",
+      "icons": [
+        "thaumicenergistics:essentia_component_4k"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        -4,
+        0
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "ESSENTIASTORAGE1k"
+      ],
+      "stages": [
+        {
+          "text": "research.essentiastorage4k.stage.1",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;1"
+          ],
+          "required_item": [
+            "thaumcraft:salis_mundus;4",
+            "thaumicenergistics:essentia_component_1k;3",
+            "appliedenergistics2:quartz_glass",
+            "appliedenergistics2:material;1;23"
+          ]
+        },
+        {
+          "text": "research.essentiastorage4k.stage.2",
+          "recipes": [
+            "thaumicenergistics:essentia_component_4k",
+            "thaumicenergistics:cells/essentia_cell_4k_housing"
+          ]
+        }
+      ],
+      "addenda": [
+        {
+          "text": "research.essentiastorage.addenda.portable",
+          "required_research": [
+            "ESSENTIASTORAGE4k"
+          ],
+          "recipes": [
+            "thaumicenergistics:cells/portable_essentia_cell_4k"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ESSENTIASTORAGE16k",
+      "name": "research.essentiastorage16k.title",
+      "icons": [
+        "thaumicenergistics:essentia_component_16k"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        -6,
+        0
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "ESSENTIASTORAGE4k"
+      ],
+      "stages": [
+        {
+          "text": "research.essentiastorage16k.stage.1",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;1"
+          ],
+          "required_item": [
+            "thaumcraft:salis_mundus;4",
+            "thaumicenergistics:essentia_component_4k;3",
+            "appliedenergistics2:quartz_glass",
+            "appliedenergistics2:material;1;24"
+          ]
+        },
+        {
+          "text": "research.essentiastorage16k.stage.2",
+          "recipes": [
+            "thaumicenergistics:essentia_component_16k",
+            "thaumicenergistics:cells/essentia_cell_16k_housing"
+          ]
+        }
+      ],
+      "addenda": [
+        {
+          "text": "research.essentiastorage.addenda.portable",
+          "required_research": [
+            "ESSENTIASTORAGE16k"
+          ],
+          "recipes": [
+            "thaumicenergistics:cells/portable_essentia_cell_16k"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ESSENTIASTORAGE64k",
+      "name": "research.essentiastorage64k.title",
+      "icons": [
+        "thaumicenergistics:essentia_component_64k"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        -8,
+        0
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "ESSENTIASTORAGE16k"
+      ],
+      "stages": [
+        {
+          "text": "research.essentiastorage64k.stage.1",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;2"
+          ],
+          "required_item": [
+            "thaumcraft:salis_mundus;4",
+            "thaumicenergistics:essentia_component_16k;3",
+            "appliedenergistics2:quartz_glass",
+            "appliedenergistics2:material;1;24"
+          ]
+        },
+        {
+          "text": "research.essentiastorage64k.stage.2",
+          "recipes": [
+            "thaumicenergistics:essentia_component_64k",
+            "thaumicenergistics:cells/essentia_cell_64k_housing"
+          ]
+        }
+      ],
+      "addenda": [
+        {
+          "text": "research.essentiastorage.addenda.portable",
+          "required_research": [
+            "ESSENTIASTORAGE64k"
+          ],
+          "recipes": [
+            "thaumicenergistics:cells/portable_essentia_cell_64k"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -100,6 +100,12 @@ first appeared. The original mod's history is in
   that holds its blocks loses them and a server's players need the same file; the wireless mode and arcane
   autocrafting stay off without the terminal, and portable cells without essentia cells. The original's settings
   in that file went with the screens and buses they were for.
+- **The Thaumonomicon has the mod's tab again**, as the original had it: scanning anything of AE2UD's opens it,
+  and the research table has its card, offered by a nearby ME controller. Its entries teach what the mod has now.
+  The entries for the Essentia Terminal, the Essentia Interface, the level emitter, the Knowledge Core and the
+  Arcane Inscriber are gone; the one for the essentia buses tells how AE2UD's own buses, storage buses,
+  interfaces and terminals carry essentia; the 256k to 16384k cells have entries of their own, where AE2UD has
+  them; the Arcane Assembler's entry teaches arcane patterns. A feature switched off in the config has no entries.
 - **Tubes connect to AE2UD's ME Interface**, the block and the part alike. An interface set to stock essentia in
   its slots is a source tubes draw that essentia from, as from a jar, even while a tube has just emptied it;
   one that stocks none takes whatever a tube brings straight into the network, pulling harder than any tube so

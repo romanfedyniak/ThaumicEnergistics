@@ -1,0 +1,53 @@
+{
+  "entries": [
+    {
+      "key": "ARCANEASSEMBLER",
+      "name": "research.arcaneassembler.title",
+      "icons": [
+        "thaumicenergistics:arcane_assembler"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        2,
+        0
+      ],
+      "meta": [
+        "ROUND",
+        "HIDDEN"
+      ],
+      "parents": [
+        "ARCANETERMINAL",
+        "DIGISENTIA"
+      ],
+      "stages": [
+        {
+          "text": "research.arcaneassembler.stage.1",
+          "required_knowledge": [
+            "OBSERVATION;THAUMICENERGISTICS;2"
+          ],
+          "required_craft": [
+            "thaumicenergistics:arcane_terminal"
+          ],
+          "required_research": [
+            "ARCANETERMINAL",
+            "DIGISENTIA"
+          ]
+        },
+        {
+          "text": "research.arcaneassembler.stage.2",
+          "recipes": [
+            "thaumicenergistics:arcane_assembler"
+          ]
+        }
+      ],
+      "addenda": [
+        {
+          "text": "research.arcaneassembler.addenda.1",
+          "required_research": [
+            "WORKBENCHCHARGER"
+          ]
+        }
+      ]
+    }
+  ]
+}
