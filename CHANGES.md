@@ -68,7 +68,8 @@ first appeared. The original mod's history is in
   shows only once both the vis and the crystals are there. The original's armour slots are gone: what the player
   wears still lowers the cost. The Arcane Charging Card in its slot over the result lets it draw vis from the
   eight chunks around its own, as a vis charger does for the workbench. With Thaumic JEI, the "+" on an arcane
-  workbench recipe fills the grid too.
+  workbench recipe fills the grid too, and with Ctrl orders what the network can craft of what is missing, once
+  the aura and the network can pay for the recipe.
 - **The wireless terminal has an arcane mode.** Crafting an Arcane Crafting Terminal into AE2UD's wireless
   terminal adds it, as the other terminals are added, in place of the original's wireless essentia terminal and
   its arcane crafting. It is the same screen, with the vis taken from the aura where the player stands at the
