@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import appeng.api.AEApi;
 import appeng.api.behaviors.ContainerItemStrategy;
@@ -32,8 +33,10 @@ import appeng.api.storage.StorageCells;
 import appeng.api.upgrades.CardTraits;
 import appeng.api.upgrades.IUpgradeRegistry;
 
+import thaumicenergistics.ThEGuis;
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.ThERecipes;
+import thaumicenergistics.ThaumicEnergistics;
 import thaumicenergistics.me.CreativeEssentiaCell;
 import thaumicenergistics.me.EssentiaKeyType;
 import thaumicenergistics.me.InterfaceEssentia;
@@ -42,6 +45,7 @@ import thaumicenergistics.me.strategy.AspectContainerAdapter;
 import thaumicenergistics.me.strategy.EssentiaContainerItemStrategy;
 import thaumicenergistics.me.strategy.EssentiaExportStrategy;
 import thaumicenergistics.me.strategy.EssentiaImportStrategy;
+import thaumicenergistics.part.PartArcaneTerminal;
 
 public class CommonProxy {
 
@@ -52,6 +56,8 @@ public class CommonProxy {
             throw new UnsupportedOperationException("Only an ME interface offers essentia this way");
         });
         ThEItems.init();
+        AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_OFF.getModels());
+        AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_ON.getModels());
     }
 
     @SubscribeEvent
@@ -89,6 +95,10 @@ public class CommonProxy {
 
         final IUpgradeRegistry upgrades = AEApi.instance().registries().upgrades();
         upgrades.registerCard(new ItemStack(ThEItems.ARCANE_CHARGING_CARD), ThEItems.ARCANE_CHARGING, 1);
+        upgrades.addTraitSupport(ThEItems.ARCANE_CHARGING, new ItemStack(ThEItems.ARCANE_TERMINAL), 1);
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(ThaumicEnergistics.INSTANCE, ThEGuis.INSTANCE);
+        ThEGuis.registerBridges();
 
         StorageCells.addCellHandler(new CreativeEssentiaCell.Handler());
         // The cards AE2UD gives its own fluid cells and portable fluid cells.

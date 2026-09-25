@@ -5,6 +5,7 @@
 
 package thaumicenergistics.proxy;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -17,6 +18,7 @@ import appeng.api.integrations.hei.IngredientConverters;
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.client.EssentiaKeyRenderHandler;
 import thaumicenergistics.client.hei.AspectIngredientConverter;
+import thaumicenergistics.item.ItemArcaneTerminal;
 import thaumicenergistics.me.EssentiaKeyType;
 
 public class ClientProxy extends CommonProxy {
@@ -32,6 +34,8 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
         AEKeyRendering.register(EssentiaKeyType.INSTANCE, new EssentiaKeyRenderHandler());
         IngredientConverters.register(new AspectIngredientConverter());
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ItemArcaneTerminal::getColor,
+                ThEItems.ARCANE_TERMINAL);
     }
 
 }

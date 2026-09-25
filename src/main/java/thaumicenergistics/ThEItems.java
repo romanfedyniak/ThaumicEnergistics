@@ -29,6 +29,7 @@ import appeng.items.tools.powered.ToolPortableCell;
 
 import thaumicenergistics.block.BlockInfusionProvider;
 import thaumicenergistics.item.ItemArcaneChargingCard;
+import thaumicenergistics.item.ItemArcaneTerminal;
 import thaumicenergistics.item.ItemCreativeEssentiaCell;
 import thaumicenergistics.item.ItemEssentiaStorageCell;
 import thaumicenergistics.me.EssentiaKeyType;
@@ -58,6 +59,7 @@ public final class ThEItems {
     public static Item COALESCENCE_CORE;
     public static Item DIFFUSION_CORE;
     public static Item ARCANE_CHARGING_CARD;
+    public static Item ARCANE_TERMINAL;
     public static final Map<EssentiaTier, Item> COMPONENTS = new EnumMap<>(EssentiaTier.class);
     public static final Map<EssentiaTier, Item> CELLS = new EnumMap<>(EssentiaTier.class);
     public static final Map<EssentiaTier, Item> PORTABLE_CELLS = new EnumMap<>(EssentiaTier.class);
@@ -76,6 +78,7 @@ public final class ThEItems {
         COALESCENCE_CORE = material("coalescence_core", new Item());
         DIFFUSION_CORE = material("diffusion_core", new Item());
         ARCANE_CHARGING_CARD = material("upgrade_arcane", new ItemArcaneChargingCard());
+        ARCANE_TERMINAL = part("arcane_terminal", new ItemArcaneTerminal());
 
         final boolean highCapacity = AEApi.instance().definitions().items().cell256k().isEnabled();
         for (final EssentiaTier tier : EssentiaTier.values()) {
@@ -121,6 +124,12 @@ public final class ThEItems {
     private static Item cell(final String name, final Item item) {
         item(name, item);
         MODELS.put(item, ThaumicEnergistics.id("cell/" + name));
+        return item;
+    }
+
+    private static Item part(final String name, final Item item) {
+        item(name, item);
+        MODELS.put(item, ThaumicEnergistics.id("part/" + name));
         return item;
     }
 

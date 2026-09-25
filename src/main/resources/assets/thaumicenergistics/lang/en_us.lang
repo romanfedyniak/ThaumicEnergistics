@@ -85,6 +85,11 @@ gui.thaumicenergistics.vis_required=Vis cost: %s
 gui.thaumicenergistics.vis_required_out_of=Vis cost: %s/%s
 gui.thaumicenergistics.vis_available=%s Available
 gui.thaumicenergistics.vis_discount=%s%% Discount
+gui.thaumicenergistics.arcane_terminal.cost=Cost: %s
+gui.thaumicenergistics.arcane_terminal.available=Aura: %s
+gui.thaumicenergistics.arcane_terminal.crystal_needed=Takes %s
+gui.thaumicenergistics.arcane_terminal.crystal_stored=In the network: %s
+gui.thaumicenergistics.arcane_terminal.crystal_missing=Not enough in the network
 
 gui.thaumicenergistics.insert_knowledge_core=Insert a Knowledge Core
 gui.thaumicenergistics.knowledge_core_is_blank=The Knowledge Core is blank

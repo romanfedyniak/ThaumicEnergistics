@@ -57,6 +57,18 @@ first appeared. The original mod's history is in
   Goggles of revealing show the network's essentia above it, as they do a jar's; the original sent that only as
   the chunk loaded or the block was clicked, and it is now kept up to date once a second. The One Probe and
   WAILA show whether it is online or missing a channel, as they do for AE2UD's own machines.
+- **The Arcane Crafting Terminal is back**, with the original's id, recipe and research, rebuilt on AE2UD's
+  crafting terminal: its list, its HEI "+" with the missing ingredients marked, and its refill from the network
+  on shift-click. It crafts what the arcane workbench crafts, plain recipes included, and beside the list it shows
+  Thaumcraft's own workbench at its own size, drawn from Thaumcraft's texture: the grid inside the ring of crystal
+  sockets and the result box. The crystals are no longer put in by hand: an arcane recipe takes the ones it needs
+  straight from the network, each glowing in its socket as on the workbench, and the ones the network is short of
+  glow red; hovering one tells how many the recipe takes and how many the network holds. The vis the recipe
+  costs, after the player's discount, and what the aura holds are written under the workbench, and the result
+  shows only once both the vis and the crystals are there. The player's armour sits on a plate to the left, since what they wear lowers
+  the cost, and the Arcane Charging Card in its slot over the result lets it draw vis from the eight chunks
+  around its own, as a vis charger does for the workbench. With Thaumic JEI, the "+" on an arcane workbench
+  recipe fills the grid too.
 - **Tubes connect to AE2UD's ME Interface**, the block and the part alike. An interface set to stock essentia in
   its slots is a source tubes draw that essentia from, as from a jar, even while a tube has just emptied it;
   one that stocks none takes whatever a tube brings straight into the network, pulling harder than any tube so

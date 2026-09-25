@@ -86,7 +86,6 @@
       "faces": {
         "north": {
           "texture": "#overlay4",
-          "tintindex": 8191818,
           "uvlightmap": {
             "sky": 0.007,
             "block": 0.007

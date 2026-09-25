@@ -97,6 +97,12 @@ public final class ThERecipes {
                 new ShapelessArcaneRecipe(GROUP, "ARCANETERMINAL@2&&WORKBENCHCHARGER", 25, new AspectList(),
                         new ItemStack(ThEItems.ARCANE_CHARGING_CARD),
                         new Object[] { stack(materials.advCard()), BlocksTC.arcaneWorkbenchCharger }));
+
+        ThaumcraftApi.addArcaneCraftingRecipe(ThaumicEnergistics.id("arcane_terminal"),
+                new ShapelessArcaneRecipe(GROUP, "ARCANETERMINAL@2", 50, new AspectList(),
+                        new ItemStack(ThEItems.ARCANE_TERMINAL),
+                        new Object[] { stack(AEApi.instance().definitions().parts().terminal()),
+                                BlocksTC.arcaneWorkbench, stack(materials.calcProcessor()) }));
     }
 
     /** Infusion recipes live in Thaumcraft's own list, not the recipe registry. */
