@@ -83,6 +83,16 @@ first appeared. The original mod's history is in
   substitutes and let the network fill containers as AE2UD's crafting patterns do. It is laid out as the workbench
   is, five across with the crystals down the sides, which is how the network hands it to a machine and how the
   pattern view draws it. Only an Arcane Assembler runs one.
+- **The Arcane Assembler is back**, with the original's id, model, window, infusion recipe and research, rebuilt
+  as AE2UD's molecular assembler is: set beside an ME interface, it takes the arcane patterns the interface holds,
+  and the interface pushes each craft's ingredients and crystals into it and gets back what it made and what the
+  recipe left. It waits until the aura holds the recipe's whole vis, at its full price, takes it all at once as the
+  craft starts, and crafts one at a time as fast as a molecular assembler with the same acceleration cards, five
+  of them. An Arcane Charging Card, in the same column as the cards, lets it draw from the eight chunks around
+  its own. Its window shows what it is crafting, the crystals the craft takes, what the craft costs and what the
+  aura holds, with a network tool's cards beside it when the player carries one, and the item turns inside the
+  block while it works. It is the arcane workbench's catalyst in the recipe screen. The original's knowledge
+  core slot and armour slots are gone with the cores. The One Probe and WAILA show whether it is online.
 - **Tubes connect to AE2UD's ME Interface**, the block and the part alike. An interface set to stock essentia in
   its slots is a source tubes draw that essentia from, as from a jar, even while a tube has just emptied it;
   one that stocks none takes whatever a tube brings straight into the network, pulling harder than any tube so

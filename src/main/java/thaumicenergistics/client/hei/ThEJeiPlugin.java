@@ -41,6 +41,7 @@ public class ThEJeiPlugin implements IModPlugin {
             registry.getRecipeTransferRegistry().addRecipeTransferHandler(
                     new RecipeTransferHandler<>(ContainerWirelessArcaneTerminal.class), ARCANE_WORKBENCH);
             registry.addRecipeCatalyst(terminal, ARCANE_WORKBENCH);
+            registry.addRecipeCatalyst(new ItemStack(ThEItems.ARCANE_ASSEMBLER), ARCANE_WORKBENCH);
         }
     }
 }

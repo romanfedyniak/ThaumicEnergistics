@@ -48,6 +48,7 @@ import thaumicenergistics.me.strategy.AspectContainerAdapter;
 import thaumicenergistics.me.strategy.EssentiaContainerItemStrategy;
 import thaumicenergistics.me.strategy.EssentiaExportStrategy;
 import thaumicenergistics.me.strategy.EssentiaImportStrategy;
+import thaumicenergistics.tile.TileArcaneAssembler;
 import thaumicenergistics.part.PartArcaneTerminal;
 
 public class CommonProxy {
@@ -102,6 +103,9 @@ public class CommonProxy {
         final IUpgradeRegistry upgrades = AEApi.instance().registries().upgrades();
         upgrades.registerCard(new ItemStack(ThEItems.ARCANE_CHARGING_CARD), ThEItems.ARCANE_CHARGING, 1);
         upgrades.addTraitSupport(ThEItems.ARCANE_CHARGING, new ItemStack(ThEItems.ARCANE_TERMINAL), 1);
+        final ItemStack assembler = new ItemStack(ThEItems.ARCANE_ASSEMBLER);
+        upgrades.addTraitSupport(CardTraits.SPEED, assembler, TileArcaneAssembler.SPEED_SLOTS);
+        upgrades.addTraitSupport(ThEItems.ARCANE_CHARGING, assembler, 1);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(ThaumicEnergistics.INSTANCE, ThEGuis.INSTANCE);
         PatternEncodingModes.register(new ArcaneEncodingMode(ThEItems.ARCANE_PATTERN));

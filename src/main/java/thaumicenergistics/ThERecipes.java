@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
 import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.blocks.BlocksTC;
@@ -114,6 +115,19 @@ public final class ThERecipes {
                 new InfusionRecipe("INFUSIONPROVIDER@2", new ItemStack(ThEItems.INFUSION_PROVIDER), 2,
                         new AspectList().add(Aspect.MECHANISM, 25).add(Aspect.MAGIC, 25).add(Aspect.EXCHANGE, 20),
                         iface, core, salis, core, salis));
+        final ItemStack assembler = AEApi.instance().definitions().blocks().molecularAssembler().maybeStack(1)
+                .orElse(ItemStack.EMPTY);
+        ThaumcraftApi.addInfusionCraftingRecipe(ThaumicEnergistics.id("arcane_assembler"),
+                new InfusionRecipe("ARCANEASSEMBLER@2", new ItemStack(ThEItems.ARCANE_ASSEMBLER), 6,
+                        new AspectList().add(Aspect.CRAFT, 64).add(Aspect.EXCHANGE, 32).add(Aspect.AURA, 16)
+                                .add(Aspect.MAGIC, 16).add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 8),
+                        assembler, core, crystal(Aspect.AIR), crystal(Aspect.WATER), salis, crystal(Aspect.ENTROPY),
+                        new ItemStack(ThEItems.DIFFUSION_CORE), crystal(Aspect.EARTH), crystal(Aspect.FIRE), salis,
+                        crystal(Aspect.ORDER)));
+    }
+
+    private static ItemStack crystal(final Aspect aspect) {
+        return ThaumcraftApiHelper.makeCrystal(aspect);
     }
 
     private static ItemStack stack(final IItemDefinition definition) {

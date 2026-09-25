@@ -30,11 +30,14 @@ import appeng.core.sync.GuiBridge;
 import appeng.core.sync.GuiWrapper;
 import appeng.helpers.WirelessTerminalGuiObject;
 
+import thaumicenergistics.client.gui.GuiArcaneAssembler;
 import thaumicenergistics.client.gui.GuiArcaneTerminal;
 import thaumicenergistics.client.gui.GuiWirelessArcaneTerminal;
+import thaumicenergistics.container.ContainerArcaneAssembler;
 import thaumicenergistics.container.ContainerArcaneTerminal;
 import thaumicenergistics.container.ContainerWirelessArcaneTerminal;
 import thaumicenergistics.part.PartArcaneTerminal;
+import thaumicenergistics.tile.TileArcaneAssembler;
 
 /**
  * The mod's windows. AE2's own list of them is fixed, so each is opened by Forge's handler here and known to AE2
@@ -51,6 +54,8 @@ public final class ThEGuis implements IGuiHandler {
     private static final int ARCANE_TERMINAL = 0;
     /** The same carried: x is the slot the wireless terminal sits in, y says whether it is a bauble slot. */
     private static final int WIRELESS_ARCANE_TERMINAL = 6;
+    /** An arcane assembler, at x, y, z. */
+    public static final int ARCANE_ASSEMBLER = 7;
 
     private static GuiBridge arcaneTerminal;
     private static GuiBridge wirelessArcaneTerminal;
@@ -147,6 +152,11 @@ public final class ThEGuis implements IGuiHandler {
     @Override
     public Object getServerGuiElement(final int id, final EntityPlayer player, final World world, final int x,
             final int y, final int z) {
+        if (id == ARCANE_ASSEMBLER) {
+            return world.getTileEntity(new BlockPos(x, y, z)) instanceof TileArcaneAssembler assembler
+                    ? new ContainerArcaneAssembler(player.inventory, assembler)
+                    : null;
+        }
         if (id == WIRELESS_ARCANE_TERMINAL) {
             final WirelessTerminalGuiObject carried = carriedTerminal(player, x, y == 1);
             return carried == null ? null
@@ -163,6 +173,11 @@ public final class ThEGuis implements IGuiHandler {
     @Override
     public Object getClientGuiElement(final int id, final EntityPlayer player, final World world, final int x,
             final int y, final int z) {
+        if (id == ARCANE_ASSEMBLER) {
+            return world.getTileEntity(new BlockPos(x, y, z)) instanceof TileArcaneAssembler assembler
+                    ? new GuiArcaneAssembler(player.inventory, assembler)
+                    : null;
+        }
         if (id == WIRELESS_ARCANE_TERMINAL) {
             final WirelessTerminalGuiObject carried = carriedTerminal(player, x, y == 1);
             return carried == null ? null : new GuiWirelessArcaneTerminal(player.inventory, carried);

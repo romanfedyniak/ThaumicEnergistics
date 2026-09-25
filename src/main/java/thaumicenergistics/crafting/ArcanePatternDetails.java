@@ -132,6 +132,11 @@ public final class ArcanePatternDetails implements ICraftingPatternDetails {
         return AEItemKey.of(ThaumcraftApiHelper.makeCrystal(ArcaneGrid.PRIMALS[index]));
     }
 
+    /** What one craft makes. */
+    public ItemStack getResult() {
+        return this.result.copy();
+    }
+
     public AspectList getCrystals() {
         return this.crystals;
     }

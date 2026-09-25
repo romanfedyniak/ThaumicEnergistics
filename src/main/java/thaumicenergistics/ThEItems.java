@@ -27,6 +27,7 @@ import appeng.tile.AEBaseTile;
 import appeng.api.upgrades.CardTrait;
 import appeng.items.tools.powered.ToolPortableCell;
 
+import thaumicenergistics.block.BlockArcaneAssembler;
 import thaumicenergistics.block.BlockInfusionProvider;
 import thaumicenergistics.item.ItemArcaneChargingCard;
 import thaumicenergistics.item.ItemArcanePattern;
@@ -34,6 +35,7 @@ import thaumicenergistics.item.ItemArcaneTerminal;
 import thaumicenergistics.item.ItemCreativeEssentiaCell;
 import thaumicenergistics.item.ItemEssentiaStorageCell;
 import thaumicenergistics.me.EssentiaKeyType;
+import thaumicenergistics.tile.TileArcaneAssembler;
 import thaumicenergistics.tile.TileInfusionProvider;
 
 /**
@@ -70,12 +72,14 @@ public final class ThEItems {
 
     public static final Map<String, Block> BLOCKS = new LinkedHashMap<>();
     public static BlockInfusionProvider INFUSION_PROVIDER;
+    public static BlockArcaneAssembler ARCANE_ASSEMBLER;
 
     private ThEItems() {
     }
 
     public static void init() {
         INFUSION_PROVIDER = block("infusion_provider", new BlockInfusionProvider());
+        ARCANE_ASSEMBLER = block("arcane_assembler", new BlockArcaneAssembler());
 
         COALESCENCE_CORE = material("coalescence_core", new Item());
         DIFFUSION_CORE = material("diffusion_core", new Item());
@@ -115,6 +119,7 @@ public final class ThEItems {
     /** Called while blocks are registered, and before the items that stand for them are. */
     public static void registerTiles() {
         registerTile(TileInfusionProvider.class, INFUSION_PROVIDER, "infusion_provider");
+        registerTile(TileArcaneAssembler.class, ARCANE_ASSEMBLER, "arcane_assembler");
         for (final Block block : BLOCKS.values()) {
             ITEMS.put(block.getRegistryName().getPath(), new AEBaseItemBlock(block).setRegistryName(block.getRegistryName()));
         }
