@@ -28,6 +28,7 @@ import appeng.api.behaviors.GenericInventoryAdapters;
 import appeng.api.behaviors.GenericSlotCapacities;
 import appeng.api.behaviors.StackExportStrategy;
 import appeng.api.behaviors.StackImportStrategy;
+import appeng.api.patterns.PatternEncodingModes;
 import appeng.api.stacks.AEKeyType;
 import appeng.api.storage.StorageCells;
 import appeng.api.upgrades.CardTraits;
@@ -38,6 +39,7 @@ import thaumicenergistics.ThEGuis;
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.ThERecipes;
 import thaumicenergistics.ThaumicEnergistics;
+import thaumicenergistics.crafting.ArcaneEncodingMode;
 import thaumicenergistics.me.CreativeEssentiaCell;
 import thaumicenergistics.me.EssentiaKeyType;
 import thaumicenergistics.me.InterfaceEssentia;
@@ -102,6 +104,7 @@ public class CommonProxy {
         upgrades.addTraitSupport(ThEItems.ARCANE_CHARGING, new ItemStack(ThEItems.ARCANE_TERMINAL), 1);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(ThaumicEnergistics.INSTANCE, ThEGuis.INSTANCE);
+        PatternEncodingModes.register(new ArcaneEncodingMode(ThEItems.ARCANE_PATTERN));
 
         StorageCells.addCellHandler(new CreativeEssentiaCell.Handler());
         // The cards AE2UD gives its own fluid cells and portable fluid cells.

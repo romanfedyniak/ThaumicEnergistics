@@ -29,6 +29,7 @@ import appeng.items.tools.powered.ToolPortableCell;
 
 import thaumicenergistics.block.BlockInfusionProvider;
 import thaumicenergistics.item.ItemArcaneChargingCard;
+import thaumicenergistics.item.ItemArcanePattern;
 import thaumicenergistics.item.ItemArcaneTerminal;
 import thaumicenergistics.item.ItemCreativeEssentiaCell;
 import thaumicenergistics.item.ItemEssentiaStorageCell;
@@ -60,6 +61,7 @@ public final class ThEItems {
     public static Item DIFFUSION_CORE;
     public static Item ARCANE_CHARGING_CARD;
     public static Item ARCANE_TERMINAL;
+    public static Item ARCANE_PATTERN;
     public static final Map<EssentiaTier, Item> COMPONENTS = new EnumMap<>(EssentiaTier.class);
     public static final Map<EssentiaTier, Item> CELLS = new EnumMap<>(EssentiaTier.class);
     public static final Map<EssentiaTier, Item> PORTABLE_CELLS = new EnumMap<>(EssentiaTier.class);
@@ -79,6 +81,8 @@ public final class ThEItems {
         DIFFUSION_CORE = material("diffusion_core", new Item());
         ARCANE_CHARGING_CARD = material("upgrade_arcane", new ItemArcaneChargingCard());
         ARCANE_TERMINAL = part("arcane_terminal", new ItemArcaneTerminal());
+        // Only ever encoded, so on no tab: an empty one would look like the blank it is written onto.
+        ARCANE_PATTERN = item("arcane_pattern", new ItemArcanePattern()).setCreativeTab(null);
 
         final boolean highCapacity = AEApi.instance().definitions().items().cell256k().isEnabled();
         for (final EssentiaTier tier : EssentiaTier.values()) {

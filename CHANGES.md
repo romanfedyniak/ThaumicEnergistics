@@ -74,6 +74,15 @@ first appeared. The original mod's history is in
   its arcane crafting. It is the same screen, with the vis taken from the aura where the player stands at the
   moment of each craft, so it cannot be read in one chunk and spent in another. The grid is kept in the terminal.
   The Arcane Charging Card has its own slot there too, kept with the grid.
+- **Arcane patterns replace the Knowledge Core and the Arcane Inscriber.** Every AE2UD pattern terminal has an
+  arcane mode, which shows Thaumcraft's own workbench beside the window as the Arcane Crafting Terminal does. The
+  player draws the recipe's nine squares; the crystals it takes are read off the recipe and written into the
+  pattern, and so is the player, whose research decides what can be encoded: a recipe they have not researched
+  gives no pattern. What the grid makes, the crystals and the vis show before encoding, and the recipe screen's
+  "+" on an arcane workbench recipe opens the mode. A pattern holds one recipe where a core held nine, and can take
+  substitutes and let the network fill containers as AE2UD's crafting patterns do. It is laid out as the workbench
+  is, five across with the crystals down the sides, which is how the network hands it to a machine and how the
+  pattern view draws it. Only an Arcane Assembler runs one.
 - **Tubes connect to AE2UD's ME Interface**, the block and the part alike. An interface set to stock essentia in
   its slots is a source tubes draw that essentia from, as from a jar, even while a tube has just emptied it;
   one that stocks none takes whatever a tube brings straight into the network, pulling harder than any tube so

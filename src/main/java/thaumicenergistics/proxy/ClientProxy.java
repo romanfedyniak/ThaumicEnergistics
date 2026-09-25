@@ -14,9 +14,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import appeng.api.client.AEKeyRendering;
 import appeng.api.integrations.hei.IngredientConverters;
+import appeng.api.patterns.client.PatternModePanels;
 
 import thaumicenergistics.ThEItems;
 import thaumicenergistics.client.EssentiaKeyRenderHandler;
+import thaumicenergistics.client.gui.ArcaneModePanel;
+import thaumicenergistics.crafting.ArcaneEncodingMode;
 import thaumicenergistics.client.hei.AspectIngredientConverter;
 import thaumicenergistics.item.ItemArcaneTerminal;
 import thaumicenergistics.me.EssentiaKeyType;
@@ -34,6 +37,7 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
         AEKeyRendering.register(EssentiaKeyType.INSTANCE, new EssentiaKeyRenderHandler());
         IngredientConverters.register(new AspectIngredientConverter());
+        PatternModePanels.register(ArcaneEncodingMode.ID, ArcaneModePanel::new);
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ItemArcaneTerminal::getColor,
                 ThEItems.ARCANE_TERMINAL);
     }

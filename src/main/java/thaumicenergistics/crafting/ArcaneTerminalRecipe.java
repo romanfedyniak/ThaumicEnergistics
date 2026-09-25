@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
+import thaumcraft.api.crafting.ContainerDummy;
 import thaumcraft.api.crafting.IArcaneRecipe;
 
 /**
@@ -60,6 +61,21 @@ public final class ArcaneTerminalRecipe extends IForgeRegistryEntry.Impl<IRecipe
         return null;
     }
 
+    /** The arcane recipe laid out in {@code grid}, whoever knows it: an encoded pattern was checked when written. */
+    @Nullable
+    public static IArcaneRecipe match(final InventoryCrafting grid, final World world) {
+        if (ArcaneGrid.isEmpty(grid)) {
+            return null;
+        }
+        final ArcaneGrid arcane = ArcaneGrid.of(grid);
+        for (final IRecipe recipe : CraftingManager.REGISTRY) {
+            if (recipe instanceof IArcaneRecipe candidate && candidate.matches(arcane, world)) {
+                return candidate;
+            }
+        }
+        return null;
+    }
+
     private static boolean knows(final EntityPlayer player, final IArcaneRecipe recipe) {
         return ThaumcraftCapabilities.getKnowledge(player).isResearchKnown(recipe.getResearch());
     }
@@ -74,9 +90,18 @@ public final class ArcaneTerminalRecipe extends IForgeRegistryEntry.Impl<IRecipe
         return this.recipe.getCraftingResult(ArcaneGrid.of(inv));
     }
 
+    /**
+     * Asked of the nine squares alone, laid three across. A recipe that works out what each ingredient leaves
+     * by finding it on the grid - GroovyScript's do - finds nothing on the workbench's five-across inventory,
+     * where the nine sit in a row.
+     */
     @Override
     public NonNullList<ItemStack> getRemainingItems(final InventoryCrafting inv) {
-        final NonNullList<ItemStack> all = this.recipe.getRemainingItems(ArcaneGrid.of(inv));
+        final InventoryCrafting squares = new InventoryCrafting(new ContainerDummy(), 3, 3);
+        for (int slot = 0; slot < GRID && slot < inv.getSizeInventory(); slot++) {
+            squares.setInventorySlotContents(slot, inv.getStackInSlot(slot).copy());
+        }
+        final NonNullList<ItemStack> all = this.recipe.getRemainingItems(squares);
         final NonNullList<ItemStack> grid = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
         for (int slot = 0; slot < Math.min(GRID, grid.size()); slot++) {
             grid.set(slot, all.get(slot));
