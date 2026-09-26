@@ -4,6 +4,20 @@ setDefaultProperty('publish_to_maven', true, false)
 setDefaultProperty('publish_to_curseforge', true, false)
 setDefaultProperty('publish_to_modrinth', true, false)
 
+// JitPack builds a pushed commit on request and serves what lands in its local maven.
+if (System.getenv('JITPACK')) {
+    publishing {
+        publications {
+            jitpack(MavenPublication) {
+                from components.java
+                groupId = System.getenv('GROUP')
+                artifactId = System.getenv('ARTIFACT')
+                version = System.getenv('VERSION')
+            }
+        }
+    }
+}
+
 if (propertyBool('publish_to_maven')) {
     assertProperty('maven_name')
     assertProperty('maven_url')
