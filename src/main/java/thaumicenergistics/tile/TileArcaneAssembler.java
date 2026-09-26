@@ -47,6 +47,7 @@ import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.GenericStack;
 import appeng.api.storage.IStorageMonitorableAccessor;
 import appeng.api.storage.MEStorage;
 import appeng.api.upgrades.CardTrait;
@@ -208,7 +209,10 @@ public class TileArcaneAssembler extends AENetworkTile implements ICraftingMachi
 
     @Override
     public boolean pushPattern(final ICraftingPatternDetails patternDetails, final InventoryCrafting table,
-            final EnumFacing ejectionDirection) {
+            final GenericStack[] extraInputs, final EnumFacing ejectionDirection) {
+        if (extraInputs.length > 0) {
+            return false;
+        }
         if (!(patternDetails instanceof ArcanePatternDetails details) || !this.acceptsPlans()
                 || table.getSizeInventory() != TABLE) {
             return false;
