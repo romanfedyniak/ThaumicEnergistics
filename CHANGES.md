@@ -12,6 +12,9 @@ first appeared. The original mod's history is in
 
 ## Unreleased
 
+- **In the pattern terminal's arcane mode a wireless terminal's cards stand in a row beside the view cells.**
+  They hung beside the workbench plate; they sit on a plate of their own over it now, as in the arcane
+  terminal.
 - **An arcane pattern follows its recipe.** It went on offering what it was encoded to make after a pack
   changed or removed the recipe, so the network could hand a machine a grid that crafted nothing. The grid is
   looked up again, once per pattern: the result and the crystals are the recipe's today, and a grid that no

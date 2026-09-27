@@ -5,6 +5,7 @@
 
 package thaumicenergistics.client.gui;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collections;
@@ -137,6 +138,12 @@ public class ArcaneModePanel extends PatternModePanel {
                 new Rectangle(WING_LEFT, this.wingTop(), WING_WIDTH, WING_HEIGHT),
                 new Rectangle(WING_LEFT, this.cellsTop(), this.cellsWidth(), CELLS_HEIGHT),
                 new Rectangle(TAB_X, top, WING_LEFT - TAB_X, bottom - top));
+    }
+
+    /** A wireless terminal's cards stand in a row beside the view cells'. */
+    @Override
+    public Point getWirelessCardRow() {
+        return new Point(WING_LEFT + this.cellsWidth() + GAP, this.cellsTop());
     }
 
     @Override
