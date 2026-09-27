@@ -66,15 +66,29 @@ public final class ArcanePatternDetails implements ICraftingPatternDetails {
     private boolean recipeLookedUp;
     private int priority;
 
-    /** @throws IllegalArgumentException when the stack is not an arcane pattern this can read. */
+    /**
+     * @throws IllegalArgumentException when the stack is not an arcane pattern this can read, or its grid no
+     *                                  longer makes anything. The result and the crystals are the recipe's today;
+     *                                  with no world to look it up in, the pattern's own.
+     */
     public ArcanePatternDetails(final ItemStack stack, @Nullable final World world) {
         if (!ItemArcanePattern.isEncoded(stack)) {
             throw new IllegalArgumentException("No arcane pattern here!");
         }
         this.pattern = stack;
-        this.result = ItemArcanePattern.resultOf(stack);
         this.grid = ItemArcanePattern.gridOf(stack);
-        this.crystals = ItemArcanePattern.crystalsOf(stack);
+        if (world != null) {
+            this.recipe = ArcanePatternRecipes.get(stack, () -> ArcaneTerminalRecipe.match(this.squares(), world));
+            this.recipeLookedUp = true;
+            if (this.recipe == null) {
+                throw new IllegalArgumentException("No arcane pattern here!");
+            }
+            this.result = this.recipe.getCraftingResult(ArcaneGrid.of(this.squares())).copy();
+            this.crystals = this.recipe.getCrystals() == null ? new AspectList() : this.recipe.getCrystals().copy();
+        } else {
+            this.result = ItemArcanePattern.resultOf(stack);
+            this.crystals = ItemArcanePattern.crystalsOf(stack);
+        }
         if (this.result.isEmpty()) {
             throw new IllegalArgumentException("No arcane pattern here!");
         }
@@ -98,7 +112,7 @@ public final class ArcanePatternDetails implements ICraftingPatternDetails {
 
         final boolean wantsItems = ItemArcanePattern.substitutesOf(stack);
         final boolean wantsFluids = ItemArcanePattern.fluidSubstitutesOf(stack);
-        final IArcaneRecipe found = (wantsItems || wantsFluids) && world != null ? this.recipe(world) : null;
+        final IArcaneRecipe found = wantsItems || wantsFluids ? this.recipe : null;
 
         this.ingredients = found == null || !wantsItems ? null : this.ingredientsFor(found);
         final GenericStack[] fabricated = new GenericStack[WIDTH * HEIGHT];

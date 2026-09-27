@@ -41,6 +41,7 @@ import thaumicenergistics.ThEItems;
 import thaumicenergistics.ThERecipes;
 import thaumicenergistics.ThaumicEnergistics;
 import thaumicenergistics.crafting.ArcaneEncodingMode;
+import thaumicenergistics.crafting.ArcanePatternRecipes;
 import thaumicenergistics.me.CreativeEssentiaCell;
 import thaumicenergistics.me.EssentiaKeyType;
 import thaumicenergistics.me.InterfaceEssentia;
@@ -58,6 +59,7 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         ThEConfig.warnAboutDependencies();
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(ArcanePatternRecipes.class);
         if (ThEConfig.interfaceTubes()) {
             MinecraftForge.EVENT_BUS.register(InterfaceEssentiaPulls.INSTANCE);
         }

@@ -12,6 +12,10 @@ first appeared. The original mod's history is in
 
 ## Unreleased
 
+- **An arcane pattern follows its recipe.** It went on offering what it was encoded to make after a pack
+  changed or removed the recipe, so the network could hand a machine a grid that crafted nothing. The grid is
+  looked up again, once per pattern: the result and the crystals are the recipe's today, and a grid that no
+  longer makes anything leaves the pattern invalid. After a GroovyScript reload it is looked up afresh.
 - **Essentia is a kind of content an ME network holds.** It is registered with AE2UD the way blocks and items
   are registered with the game, so everything written to carry any kind of content carries essentia without
   knowing what it is: the terminals list it, the key-type picker offers it, and each aspect is drawn with
