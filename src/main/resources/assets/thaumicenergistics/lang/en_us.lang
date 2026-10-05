@@ -55,6 +55,7 @@ gui.thaumicenergistics.arcane_terminal.crystal_needed=Takes %s
 gui.thaumicenergistics.arcane_terminal.crystal_stored=In the network: %s
 gui.thaumicenergistics.arcane_terminal.crystal_missing=Not enough in the network
 gui.thaumicenergistics.wireless_mode.arcane=Arcane
+key.thaumicenergistics.open_wireless_arcane_terminal.desc=Open Wireless Arcane Terminal
 item.thaumicenergistics.arcane_pattern.name=Arcane Pattern
 gui.thaumicenergistics.arcane_pattern=Arcane Pattern
 gui.thaumicenergistics.pattern_mode.arcane=Arcane

@@ -42,6 +42,7 @@ gui.thaumicenergistics.arcane_terminal.crystal_needed=Потрібно: %s
 gui.thaumicenergistics.arcane_terminal.crystal_stored=У мережі: %s
 gui.thaumicenergistics.arcane_terminal.crystal_missing=У мережі не вистачає
 gui.thaumicenergistics.wireless_mode.arcane=Магічний
+key.thaumicenergistics.open_wireless_arcane_terminal.desc=Відкрити бездротовий магічний термінал
 item.thaumicenergistics.arcane_pattern.name=Магічний шаблон
 gui.thaumicenergistics.arcane_pattern=Магічний шаблон
 gui.thaumicenergistics.pattern_mode.arcane=Магічний
