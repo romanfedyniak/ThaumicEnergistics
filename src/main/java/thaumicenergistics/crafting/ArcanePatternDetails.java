@@ -50,6 +50,7 @@ public final class ArcanePatternDetails implements ICraftingPatternDetails {
     private static final int GRID = 9;
 
     private final ItemStack pattern;
+    private final int hash;
     private final ItemStack result;
     /** The recipe's nine squares, in its own three-across order. */
     private final ItemStack[] grid;
@@ -75,7 +76,10 @@ public final class ArcanePatternDetails implements ICraftingPatternDetails {
         if (!ItemArcanePattern.isEncoded(stack)) {
             throw new IllegalArgumentException("No arcane pattern here!");
         }
-        this.pattern = stack;
+        // A copy: the stack in the provider is the one a player takes out, and an emptied one has no key, so a
+        // crafting job holding these details crashed the server on its next hash.
+        this.pattern = stack.copy();
+        this.hash = AEItemKey.of(this.pattern).hashCode();
         this.grid = ItemArcanePattern.gridOf(stack);
         if (world != null) {
             this.recipe = ArcanePatternRecipes.get(stack, () -> ArcaneTerminalRecipe.match(this.squares(), world));
@@ -345,7 +349,7 @@ public final class ArcanePatternDetails implements ICraftingPatternDetails {
 
     @Override
     public int hashCode() {
-        return AEItemKey.of(this.pattern).hashCode();
+        return this.hash;
     }
 
     @Override
