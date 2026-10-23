@@ -12,6 +12,10 @@ first appeared. The original mod's history is in
 
 ## Unreleased
 
+- **An export bus or interface no longer crashes the server on a thaumatorium that has not picked a recipe.**
+  Thaumcraft's thaumatorium throws when essentia is put into it before it knows what it is making, and it
+  is asked through either half. It is offered only what its current recipe still needs now, and nothing
+  while it has none.
 - **A world saved with Thaumic Energistics on AE2 UEL keeps its essentia.** Essentia cells keep what they
   hold and their partition, and the essentia buses, storage bus, level emitter and terminal become the AE2UD
   parts they were copies of, with their filters and cards; the parts that worked only with essentia still do,

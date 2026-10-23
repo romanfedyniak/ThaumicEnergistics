@@ -5,16 +5,22 @@
 
 package thaumicenergistics.me.strategy;
 
+import java.lang.reflect.Field;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.common.tiles.crafting.TileCrucible;
+import thaumcraft.common.tiles.crafting.TileThaumatorium;
+import thaumcraft.common.tiles.crafting.TileThaumatoriumTop;
 import thaumcraft.common.tiles.essentia.TileCentrifuge;
 import thaumcraft.common.tiles.essentia.TileJarFillable;
 import thaumcraft.common.tiles.essentia.TileJarFillableVoid;
@@ -30,6 +36,7 @@ final class AspectContainers {
 
     private static final int JAR_CAPACITY = 250;
     private static final int TUBE_BUFFER_CAPACITY = 10;
+    private static final Field CURRENT_RECIPE = ReflectionHelper.findField(TileThaumatorium.class, "currentRecipe");
 
     private AspectContainers() {
     }
@@ -77,6 +84,9 @@ final class AspectContainers {
         if (container instanceof TileTubeBuffer) {
             return Math.max(0, Math.min(amount, TUBE_BUFFER_CAPACITY - contents(container).visSize()));
         }
+        if (isThaumatorium(container)) {
+            return Math.min(amount, thaumatoriumRoom(container, aspect));
+        }
         return amount;
     }
 
@@ -87,6 +97,9 @@ final class AspectContainers {
         if (amount <= 0 || !acceptsInserts(container) || !container.doesContainerAccept(aspect)) {
             return 0;
         }
+        if (isThaumatorium(container) && thaumatoriumRoom(container, aspect) <= 0) {
+            return 0;
+        }
         int added = amount - container.addToContainer(aspect, amount);
         if (added == 0 && amount > 1) {
             while (added < amount && container.addToContainer(aspect, 1) == 0) {
@@ -94,6 +107,37 @@ final class AspectContainers {
             }
         }
         return added;
+    }
+
+    private static boolean isThaumatorium(final IAspectContainer container) {
+        return container instanceof TileThaumatorium || container instanceof TileThaumatoriumTop;
+    }
+
+    /**
+     * A thaumatorium, through either of its halves, takes what the recipe it is on still needs. Before it has
+     * picked one, Thaumcraft's own insert throws, so it is not asked then.
+     */
+    private static int thaumatoriumRoom(final IAspectContainer container, final Aspect aspect) {
+        final TileThaumatorium thaumatorium = container instanceof TileThaumatoriumTop
+                ? ((TileThaumatoriumTop) container).thaumatorium
+                : (TileThaumatorium) container;
+        if (thaumatorium == null) {
+            return 0;
+        }
+        final CrucibleRecipe recipe = currentRecipe(thaumatorium);
+        if (recipe == null || recipe.getAspects() == null) {
+            return 0;
+        }
+        return Math.max(0, recipe.getAspects().getAmount(aspect) - thaumatorium.essentia.getAmount(aspect));
+    }
+
+    @Nullable
+    private static CrucibleRecipe currentRecipe(final TileThaumatorium thaumatorium) {
+        try {
+            return (CrucibleRecipe) CURRENT_RECIPE.get(thaumatorium);
+        } catch (final IllegalAccessException e) {
+            return null;
+        }
     }
 
     static int simulateExtract(final IAspectContainer container, final Aspect aspect, final int amount) {
