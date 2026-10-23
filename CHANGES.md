@@ -12,6 +12,15 @@ first appeared. The original mod's history is in
 
 ## Unreleased
 
+- **A world saved with Thaumic Energistics on AE2 UEL keeps its essentia.** Essentia cells keep what they
+  hold and their partition, and the essentia buses, storage bus, level emitter and terminal become the AE2UD
+  parts they were copies of, with their filters and cards; the parts that worked only with essentia still do,
+  and so does the wireless essentia terminal, which becomes AE2UD's. The arcane inscriber becomes a pattern
+  terminal in the arcane mode. A knowledge core becomes arcane patterns, one per recipe: a core in an
+  inventory becomes the pattern of its first recipe and hands the rest to the player who carries it, and the
+  core of an assembler or an inscriber, with a result the assembler had not handed back and the crystals in
+  an arcane terminal's grid, goes into a chest beside it. A blank knowledge core becomes a blank pattern. The
+  essentia interface has no equivalent and is gone, which the migration log records.
 - **In the pattern terminal's arcane mode a wireless terminal's cards stand in a row beside the view cells.**
   They hung beside the workbench plate; they sit on a plate of their own over it now, as in the arcane
   terminal.

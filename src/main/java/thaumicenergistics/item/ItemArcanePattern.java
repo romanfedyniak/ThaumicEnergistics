@@ -10,6 +10,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,6 +30,7 @@ import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.helpers.ItemStackHelper;
 
 import thaumicenergistics.crafting.ArcanePatternDetails;
+import thaumicenergistics.migration.UelEssentiaMigration;
 
 /**
  * A pattern for an arcane workbench recipe, kept apart from AE2's own so that only an Arcane Assembler takes it.
@@ -135,6 +138,29 @@ public class ItemArcanePattern extends Item implements ICraftingPatternItem {
     }
 
     @Nullable
+    /**
+     * A knowledge core from a world saved on AE2 UEL became the pattern of its first recipe and carries the rest;
+     * the player who has it gets them.
+     */
+    @Override
+    public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int slot,
+            final boolean selected) {
+        final NBTTagCompound tag = stack.getTagCompound();
+        if (world.isRemote || tag == null || !tag.hasKey(UelEssentiaMigration.UNPACK)
+                || !(entity instanceof EntityPlayer)) {
+            return;
+        }
+        final EntityPlayer player = (EntityPlayer) entity;
+        final NBTTagList rest = tag.getTagList(UelEssentiaMigration.UNPACK, Constants.NBT.TAG_COMPOUND);
+        tag.removeTag(UelEssentiaMigration.UNPACK);
+        for (int i = 0; i < rest.tagCount(); i++) {
+            final ItemStack pattern = new ItemStack(rest.getCompoundTagAt(i));
+            if (!player.inventory.addItemStackToInventory(pattern)) {
+                player.dropItem(pattern, false);
+            }
+        }
+    }
+
     @Override
     public ICraftingPatternDetails getPatternForItem(final ItemStack is, final World w) {
         try {

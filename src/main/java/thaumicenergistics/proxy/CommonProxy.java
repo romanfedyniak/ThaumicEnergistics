@@ -50,6 +50,7 @@ import thaumicenergistics.me.strategy.AspectContainerAdapter;
 import thaumicenergistics.me.strategy.EssentiaContainerItemStrategy;
 import thaumicenergistics.me.strategy.EssentiaExportStrategy;
 import thaumicenergistics.me.strategy.EssentiaImportStrategy;
+import thaumicenergistics.migration.UelEssentiaMigration;
 import thaumicenergistics.research.ThEResearch;
 import thaumicenergistics.tile.TileArcaneAssembler;
 import thaumicenergistics.part.PartArcaneTerminal;
@@ -67,6 +68,7 @@ public class CommonProxy {
             throw new UnsupportedOperationException("Only an ME interface offers essentia this way");
         });
         ThEItems.init();
+        UelEssentiaMigration.register();
         if (ThEConfig.arcaneTerminal()) {
             AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_OFF.getModels());
             AEApi.instance().registries().partModels().registerModels(PartArcaneTerminal.MODELS_ON.getModels());
