@@ -10,7 +10,7 @@ first appeared. The original mod's history is in
   AE2 or AE2 Unofficial Extended Life.
 - Back up the world before installing or updating the mod.
 
-## Unreleased
+## 1.0.0 - 2026-10-24
 
 - **An export bus or interface no longer crashes the server on a thaumatorium that has not picked a recipe.**
   Thaumcraft's thaumatorium throws when essentia is put into it before it knows what it is making, and it
