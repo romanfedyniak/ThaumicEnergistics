@@ -18,6 +18,7 @@ import thaumcraft.api.aspects.Aspect;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
+import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AEKeyType;
 import appeng.api.stacks.KeyCounter;
@@ -101,6 +102,11 @@ public final class CreativeEssentiaCell implements StorageCell, IStorageSink {
         @Override
         public boolean isCell(final ItemStack is) {
             return !is.isEmpty() && is.getItem() == ThEItems.CREATIVE_ESSENTIA_CELL;
+        }
+
+        @Override
+        public boolean isCell(final AEItemKey key) {
+            return key.getItem() == ThEItems.CREATIVE_ESSENTIA_CELL;
         }
 
         @Nullable
