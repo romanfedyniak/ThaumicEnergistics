@@ -20,11 +20,7 @@ import thaumicenergistics.proxy.CommonProxy;
         dependencies = ThaumicEnergistics.DEPENDENCIES)
 public class ThaumicEnergistics {
 
-    /**
-     * No version on AE2UD: the fork shares its mod id with AE2 and AE2UEL, and the version range that tells
-     * them apart waits for AE2UD's first release.
-     */
-    static final String DEPENDENCIES = "required-after:appliedenergistics2;required-after:thaumcraft;required-after:mixinbooter;after:jei;after:thaumicjei;after:theoneprobe";
+    static final String DEPENDENCIES = "required-after:appliedenergistics2@[1.6.0,);required-after:thaumcraft;required-after:mixinbooter;after:jei;after:thaumicjei;after:theoneprobe";
 
     public static final String MODID = Tags.MOD_ID;
 

@@ -146,5 +146,5 @@ first appeared. The original mod's history is in
   latest `vX.Y.Z` git tag, a build on every push and jars published to GitHub Releases on a tag. The jar is
   called `thaumicenergistics-ud`, so it cannot be mistaken for the mod it was forked from.
 - **The Russian translation is removed.**
-- **No version range on AE2UD yet.** AE2UD shares its mod id with AE2 and AE2 UEL, so only a version range
-  tells them apart, and the range cannot be written until AE2UD's first release.
+- **Requires AE2UD 1.6.0 or newer.** AE2UD shares its mod id with AE2 and AE2 UEL, so the version range is
+  what keeps the game from starting with either of them in its place.
