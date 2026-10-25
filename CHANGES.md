@@ -10,6 +10,13 @@ first appeared. The original mod's history is in
   AE2 or AE2 Unofficial Extended Life.
 - Back up the world before installing or updating the mod.
 
+## 1.0.1 - 2026-10-25
+
+- The creative essentia cell can be stored inside another storage cell. It holds nothing of its own, so
+  nothing is lost.
+- A storage cell's check whether an item is a creative essentia cell no longer builds a stack for every item
+  the network moves.
+
 ## 1.0.0 - 2026-10-24
 
 - **An export bus or interface no longer crashes the server on a thaumatorium that has not picked a recipe.**
