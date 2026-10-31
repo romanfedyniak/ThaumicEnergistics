@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.math.BlockPos;
@@ -64,6 +65,9 @@ public final class ArcaneCrafting {
     private IRecipe plain;
     private ArcaneCosts costs = ArcaneCosts.NONE;
     private int ticks;
+    /** The grid {@link #arcane} was looked up for, until the next recheck; null to look again. */
+    @Nullable
+    private ItemStack[] searched;
 
     public ArcaneCrafting(final Host host) {
         this.host = host;
@@ -80,6 +84,7 @@ public final class ArcaneCrafting {
             return false;
         }
         this.ticks = 0;
+        this.searched = null;
         return true;
     }
 
@@ -89,7 +94,13 @@ public final class ArcaneCrafting {
      */
     @Nullable
     public IRecipe findRecipe(final InventoryCrafting grid, final World world, final ArcaneCosts known) {
-        this.arcane = ArcaneTerminalRecipe.find(grid, this.host.getPlayer(), this.arcane);
+        if (!this.sameGrid(grid)) {
+            this.arcane = ArcaneTerminalRecipe.find(grid, this.host.getPlayer(), this.arcane);
+            this.searched = new ItemStack[grid.getSizeInventory()];
+            for (int slot = 0; slot < this.searched.length; slot++) {
+                this.searched[slot] = grid.getStackInSlot(slot).copy();
+            }
+        }
         if (this.arcane != null) {
             final boolean payable = Platform.isServer() ? this.work(this.arcane).canPay() : known.canPay();
             return payable ? new ArcaneTerminalRecipe(this.arcane) : null;
@@ -101,6 +112,25 @@ public final class ArcaneCrafting {
             this.plain = CraftingManager.findMatchingRecipe(grid, world);
         }
         return this.plain;
+    }
+
+    /**
+     * Whether {@code grid} holds what the last lookup saw. A shift-click craft asks after every item it makes, and a
+     * grid with no arcane recipe on it goes through every arcane recipe there is each time.
+     */
+    private boolean sameGrid(final InventoryCrafting grid) {
+        if (this.searched == null || this.searched.length != grid.getSizeInventory()) {
+            return false;
+        }
+        for (int slot = 0; slot < this.searched.length; slot++) {
+            final ItemStack was = this.searched[slot];
+            final ItemStack now = grid.getStackInSlot(slot);
+            if (was.isEmpty() != now.isEmpty() || !ItemStack.areItemsEqual(was, now)
+                    || !ItemStack.areItemStackTagsEqual(was, now)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private ArcaneCosts work(final IArcaneRecipe recipe) {
