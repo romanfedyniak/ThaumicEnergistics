@@ -51,6 +51,7 @@ public final class ArcanePatternDetails implements ICraftingPatternDetails {
 
     private final ItemStack pattern;
     private final int hash;
+    private final AEItemKey identity;
     private final ItemStack result;
     /** The recipe's nine squares, in its own three-across order. */
     private final ItemStack[] grid;
@@ -79,7 +80,13 @@ public final class ArcanePatternDetails implements ICraftingPatternDetails {
         // A copy: the stack in the provider is the one a player takes out, and an emptied one has no key, so a
         // crafting job holding these details crashed the server on its next hash.
         this.pattern = stack.copy();
-        this.hash = AEItemKey.of(this.pattern).hashCode();
+        // Who encoded it is no part of the recipe: two players' copies are one pattern, and a job spreads over both.
+        final ItemStack anonymous = stack.copy();
+        if (anonymous.getTagCompound() != null) {
+            anonymous.getTagCompound().removeTag("author");
+        }
+        this.identity = AEItemKey.of(anonymous);
+        this.hash = this.identity.hashCode();
         this.grid = ItemArcanePattern.gridOf(stack);
         if (world != null) {
             this.recipe = ArcanePatternRecipes.get(stack, () -> ArcaneTerminalRecipe.match(this.squares(), world));
@@ -354,7 +361,7 @@ public final class ArcanePatternDetails implements ICraftingPatternDetails {
 
     @Override
     public boolean equals(final Object obj) {
-        return obj instanceof ArcanePatternDetails other && ItemStack.areItemStacksEqual(this.pattern, other.pattern);
+        return obj instanceof ArcanePatternDetails other && this.identity.equals(other.identity);
     }
 
     /**
