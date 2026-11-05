@@ -10,6 +10,15 @@ first appeared. The original mod's history is in
   AE2 or AE2 Unofficial Extended Life.
 - Back up the world before installing or updating the mod.
 
+## 1.0.3 - 2026-11-05
+
+- Arcane patterns of one recipe are one pattern whoever encoded them, so a job spreads over every arcane
+  assembler that holds one, not only over those of one author.
+
+## 1.0.2 - 2026-10-31
+
+- An arcane terminal looks its grid up again only when the grid changes.
+
 ## 1.0.1 - 2026-10-25
 
 - The creative essentia cell can be stored inside another storage cell. It holds nothing of its own, so
